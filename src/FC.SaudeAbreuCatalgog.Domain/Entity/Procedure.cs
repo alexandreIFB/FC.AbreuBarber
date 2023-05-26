@@ -28,19 +28,34 @@ namespace FC.SaudeAbreuCatalgog.Domain.Entity
             Validate();
         }
 
-        public void Validate()
+        private void Validate()
         {
             if (String.IsNullOrWhiteSpace(Name))
             {
                 throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
             }
 
-            if(Description == null)
+            if (Name.Length < 3)
+            {
+                throw new EntityValidationException($"{nameof(Name)} should be at leats 3 characters long");
+            }
+
+            if (Name.Length > 255)
+            {
+                throw new EntityValidationException($"{nameof(Name)} should be less or equal 255 characters long");
+            }
+
+            if (Description == null)
             {
                 throw new EntityValidationException($"{nameof(Description)} should not be null");
             }
 
-            if(Value < 50.0)
+            if (Description.Length > 10_000)
+            {
+                throw new EntityValidationException($"{nameof(Description)} should be less or equal 10_000 characters long");
+            }
+
+            if (Value < 50.0)
             {
                 throw new EntityValidationException($"{nameof(Value)} should not be less than 50");
             }
@@ -49,6 +64,19 @@ namespace FC.SaudeAbreuCatalgog.Domain.Entity
             {
                 throw new EntityValidationException($"{nameof(Value)} should not be bigger than 1000");
             }
+        }
+
+
+        public void Activate()
+        {
+            IsActive = true;
+            Validate();
+        }
+
+        public void Deactivate()
+        {
+            IsActive = false;
+            Validate();
         }
     }
 }
