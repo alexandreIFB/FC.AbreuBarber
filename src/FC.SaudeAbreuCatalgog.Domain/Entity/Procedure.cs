@@ -78,5 +78,14 @@ namespace FC.SaudeAbreuCatalgog.Domain.Entity
             IsActive = false;
             Validate();
         }
+
+        public void Update(string? name = null, string? description = null, double? value = null)
+        {
+            Name = name ?? Name;
+            Description = description ?? Description;
+            Value = value ?? Value;
+
+            Validate();
+        }
     }
 }
