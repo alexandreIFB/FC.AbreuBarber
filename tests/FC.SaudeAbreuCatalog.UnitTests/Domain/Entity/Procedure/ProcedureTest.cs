@@ -7,32 +7,32 @@ using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
 
 namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
 {
+    [Collection(nameof(ProcedureTestFixture))]
     public class ProcedureTest
     {
+        private readonly ProcedureTestFixture _fixture;
+
+        public ProcedureTest() => _fixture = new ProcedureTestFixture();
+
         [Fact(DisplayName = nameof(Instantiate))]
         [Trait("Domain", "Procedure -  Aggregates")]
         public void Instantiate()
         {
             // Arrange
-            var validData = new
-            {
-                Name = "Procedure Valide Name",
-                Description = "Procedure Description",
-                Value = 109.21
-            };
+            var validProcedure = _fixture.GetValidProcedure();
             // Act
             var dateTimeBefore = DateTime.Now;
 
-            var procedure = new DomainEntity.Procedure(validData.Name, validData.Description, validData.Value);
+            var procedure = new DomainEntity.Procedure(validProcedure.Name, validProcedure.Description, validProcedure.Value);
 
             var dateTimeAfter = DateTime.Now;
 
 
             // Assert
             Assert.NotNull(procedure);
-            Assert.Equal(procedure.Name, validData.Name);
-            Assert.Equal(procedure.Description, validData.Description);
-            Assert.Equal(procedure.Value, validData.Value);
+            Assert.Equal(procedure.Name, validProcedure.Name);
+            Assert.Equal(procedure.Description, validProcedure.Description);
+            Assert.Equal(procedure.Value, validProcedure.Value);
             Assert.NotEqual(procedure.Id, default(Guid));
             Assert.NotEqual(procedure.CreatedAt, default(DateTime));
             // Fazendo separado para rastrear mais facilmente
@@ -48,27 +48,22 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         public void InstantiateWithIsActiveStatus(bool isActive)
         {
             // Arrange
-            var validData = new
-            {
-                Name = "Procedure Valide Name",
-                Description = "Procedure Description",
-                Value = 109.21,
-            };
+            var validProcedure = _fixture.GetValidProcedure();
 
             // Act
             var dateTimeBefore = DateTime.Now;
 
 
-            var procedure = new DomainEntity.Procedure(validData.Name, validData.Description, validData.Value, isActive);
+            var procedure = new DomainEntity.Procedure(validProcedure.Name, validProcedure.Description, validProcedure.Value, isActive);
 
             var dateTimeAfter = DateTime.Now;
 
 
             // Assert
             Assert.NotNull(procedure);
-            Assert.Equal(procedure.Name, validData.Name);
-            Assert.Equal(procedure.Description, validData.Description);
-            Assert.Equal(procedure.Value, validData.Value);
+            Assert.Equal(procedure.Name, validProcedure.Name);
+            Assert.Equal(procedure.Description, validProcedure.Description);
+            Assert.Equal(procedure.Value, validProcedure.Value);
             Assert.NotEqual(procedure.Id, default(Guid));
             Assert.NotEqual(procedure.CreatedAt, default(DateTime));
             Assert.True(procedure.CreatedAt > dateTimeBefore);
@@ -83,8 +78,11 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData("            ")]
         public void InstantiateErrorWhenNameIsEmpty(string? name)
         {
+            var validProcedure = _fixture.GetValidProcedure();
+
+
             Action action =
-                () => new DomainEntity.Procedure(name!, "Procedure Description", 120.12);
+                () => new DomainEntity.Procedure(name!, validProcedure.Description, validProcedure.Value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Name should not be empty or null", exception.Message);
@@ -94,8 +92,11 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         public void InstantiateErrorWhenDescriptionIsNull()
         {
+            var validProcedure = _fixture.GetValidProcedure();
+
+
             Action action =
-                () => new DomainEntity.Procedure("Name valid", null!, 120.12);
+                () => new DomainEntity.Procedure(validProcedure.Name, null!, validProcedure.Value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Description should not be null", exception.Message);
@@ -106,7 +107,10 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         public void InstantiateWhenDescriptionEmpty()
         {
-            var procudure = new DomainEntity.Procedure("Name valid", "", 120.12);
+            var validProcedure = _fixture.GetValidProcedure();
+
+
+            var procudure = new DomainEntity.Procedure(validProcedure.Name, "", validProcedure.Value);
 
             Assert.Equal("", procudure.Description);
         }
@@ -119,8 +123,10 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData(29.99)]
         public void InstantiateErrorWhenValueIsMinor(double value)
         {
+            var validProcedure = _fixture.GetValidProcedure();
+
             Action action =
-                () => new DomainEntity.Procedure("Procedure Name", "Procedure Description", value);
+                () => new DomainEntity.Procedure(validProcedure.Name, validProcedure.Description, value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Value should not be less than 50", exception.Message);
@@ -132,8 +138,10 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData(1012400.02)]
         public void InstantiateErrorWhenValueIsBigger(double value)
         {
+            var validProcedure = _fixture.GetValidProcedure();
+
             Action action =
-                () => new DomainEntity.Procedure("Procedure Name", "Procedure Description", value);
+                () => new DomainEntity.Procedure(validProcedure.Name, validProcedure.Description, value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Value should not be bigger than 1000", exception.Message);
@@ -146,8 +154,10 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData("Na")]
         public void InstantiateErrorWhenNameIsLessThan3Characters(string invalidName)
         {
+            var validProcedure = _fixture.GetValidProcedure();
+
             Action action =
-                () => new DomainEntity.Procedure(invalidName, "Procedure Description", 120.12);
+                () => new DomainEntity.Procedure(invalidName, validProcedure.Description, validProcedure.Value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Name should be at leats 3 characters long", exception.Message);
@@ -160,8 +170,10 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         {
             var invalidName = String.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
 
+            var validProcedure = _fixture.GetValidProcedure();
+
             Action action =
-                () => new DomainEntity.Procedure(invalidName, "Procedure Description", 120.12);
+                () => new DomainEntity.Procedure(invalidName, validProcedure.Description, validProcedure.Value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Name should be less or equal 255 characters long", exception.Message);
@@ -173,8 +185,11 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         {
             var invalidDescription = String.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
 
+            var validProcedure = _fixture.GetValidProcedure();
+
+
             Action action =
-                () => new DomainEntity.Procedure("Name Procedure", invalidDescription, 120.12);
+                () => new DomainEntity.Procedure(validProcedure.Name, invalidDescription, validProcedure.Value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Description should be less or equal 10_000 characters long", exception.Message);
@@ -186,116 +201,89 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         public void ChangeIsActiveStatus()
         {
             // Arrange
-            var validData = new
-            {
-                Name = "Procedure Valide Name",
-                Description = "Procedure Description",
-                Value = 109.21
-            };
+            var validProcedure = _fixture.GetValidProcedure();
             // Act
 
-            var procedure = new DomainEntity.Procedure(validData.Name, validData.Description, validData.Value);
 
-            procedure.Activate();
-            Assert.True(procedure.IsActive);
+            validProcedure.Activate();
+            Assert.True(validProcedure.IsActive);
 
-            procedure.Deactivate();
-            Assert.False(procedure.IsActive);
+            validProcedure.Deactivate();
+            Assert.False(validProcedure.IsActive);
 
-            procedure.Activate();
-            Assert.True(procedure.IsActive);
+            validProcedure.Activate();
+            Assert.True(validProcedure.IsActive);
         }
 
         [Fact(DisplayName = nameof(Update))]
         [Trait("Domain", "Procedure -  Aggregates")]
         public void Update()
         {
-            var validData = new
-            {
-                Name = "Procedure Valide Name",
-                Description = "Procedure Description",
-                Value = 109.21
-            };
+            var validProcedure = _fixture.GetValidProcedure();
             var newValues = new
             {
                 Name = "New Procedure Valide Name",
                 Description = "New Procedure Description",
                 Value = 100.12
             };
-            var procedure = new DomainEntity.Procedure(validData.Name, validData.Description, validData.Value);
 
-            procedure.Update(newValues.Name, newValues.Description, newValues.Value);
+            validProcedure.Update(newValues.Name, newValues.Description, newValues.Value);
 
 
-            Assert.Equal(newValues.Name, procedure.Name);
-            Assert.Equal(newValues.Description, procedure.Description);
-            Assert.Equal(newValues.Value, procedure.Value);
+            Assert.Equal(newValues.Name, validProcedure.Name);
+            Assert.Equal(newValues.Description, validProcedure.Description);
+            Assert.Equal(newValues.Value, validProcedure.Value);
         }
 
         [Fact(DisplayName = nameof(UpdateOnlyName))]
         [Trait("Domain", "Procedure -  Aggregates")]
         public void UpdateOnlyName()
         {
-            var validData = new
-            {
-                Name = "Procedure Valide Name",
-                Description = "Procedure Description",
-                Value = 109.21
-            };
+            var validProcedure = _fixture.GetValidProcedure();
+
             var newName = "New Procedure Valide Name";
 
-            var procedure = new DomainEntity.Procedure(validData.Name, validData.Description, validData.Value);
-
-            procedure.Update(newName);
+            var initDescription = validProcedure.Description;
 
 
-            Assert.Equal(newName, procedure.Name);
-            Assert.Equal(validData.Description, procedure.Description);
-            Assert.Equal(validData.Value, procedure.Value);
+            validProcedure.Update(newName);
+
+
+            Assert.Equal(newName, validProcedure.Name);
+            Assert.Equal(validProcedure.Description, initDescription);
         }
 
         [Fact(DisplayName = nameof(UpdateOnlyDescription))]
         [Trait("Domain", "Procedure -  Aggregates")]
         public void UpdateOnlyDescription()
         {
-            var validData = new
-            {
-                Name = "Procedure Valide Name",
-                Description = "Procedure Description",
-                Value = 109.21
-            };
+            var validProcedure = _fixture.GetValidProcedure();
+            var procedure = _fixture.GetValidProcedure();
             var newDescription = "New Procedure Valide Description";
 
-            var procedure = new DomainEntity.Procedure(validData.Name, validData.Description, validData.Value);
 
             procedure.Update(null,newDescription);
 
 
             Assert.Equal(newDescription, procedure.Description);
-            Assert.Equal(validData.Name, procedure.Name);
-            Assert.Equal(validData.Value, procedure.Value);
+            Assert.Equal(validProcedure.Name, procedure.Name);
+            Assert.Equal(validProcedure.Value, procedure.Value);
         }
 
         [Fact(DisplayName = nameof(UpdateOnlyValue))]
         [Trait("Domain", "Procedure -  Aggregates")]
         public void UpdateOnlyValue()
         {
-            var validData = new
-            {
-                Name = "Procedure Valide Name",
-                Description = "Procedure Description",
-                Value = 109.21
-            };
+            var validProcedure = _fixture.GetValidProcedure();
+            var procedure = _fixture.GetValidProcedure();
             var newValue = 111.9;
-
-            var procedure = new DomainEntity.Procedure(validData.Name, validData.Description, validData.Value);
 
             procedure.Update(null, null, newValue);
 
 
             Assert.Equal(newValue,procedure.Value);
-            Assert.Equal(validData.Name, procedure.Name);
-            Assert.Equal(validData.Description, procedure.Description);
+            Assert.Equal(validProcedure.Name, procedure.Name);
+            Assert.Equal(validProcedure.Description, procedure.Description);
         }
 
         [Theory(DisplayName = nameof(UpdateErrorWhenNameIsEmpty))]
@@ -304,9 +292,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData("            ")]
         public void UpdateErrorWhenNameIsEmpty(string? name)
         {
-            var validName = "Name Procedure";
-
-            var procedure = new DomainEntity.Procedure(validName, "Procedure Description", 120.12);
+            var procedure = _fixture.GetValidProcedure();
             Action action =
                 () => procedure.Update(name);
 
@@ -319,12 +305,13 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         public void UpdateWhenDescriptionIsNull()
         {
 
-            var validDescription = "Procedure Description";
-            var procedure = new DomainEntity.Procedure("Name valid", validDescription, 120.12);
+            var procedure = _fixture.GetValidProcedure();
+            var initDescription = procedure.Description;
+
 
             procedure.Update(null, null);
 
-            Assert.Equal(validDescription,procedure.Description);
+            Assert.Equal(initDescription, procedure.Description);
         }
 
         [Theory(DisplayName = nameof(UpdateErrorWhenValueIsMinor))]
@@ -334,8 +321,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData(29.99)]
         public void UpdateErrorWhenValueIsMinor(double value)
         {
-            var validValue = 120.12;
-            var procedure = new DomainEntity.Procedure("Name valid", "Procedure Description", validValue);
+            var procedure = _fixture.GetValidProcedure();
 
             Action action =
                 () => procedure.Update(null, null, value);
@@ -350,8 +336,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData(1012400.02)]
         public void UpdateErrorWhenValueIsBigger(double value)
         {
-            var validValue = 120.12;
-            var procedure = new DomainEntity.Procedure("Name valid", "Procedure Description", validValue);
+            var procedure = _fixture.GetValidProcedure();
 
             Action action =
                 () => procedure.Update(null, null, value);
@@ -366,8 +351,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [InlineData("Na")]
         public void UpdateErrorWhenNameIsLessThan3Characters(string invalidName)
         {
-            var validName = "Name valid";
-            var procedure = new DomainEntity.Procedure(validName, "Procedure Description", 120.12);
+            var procedure = _fixture.GetValidProcedure();
 
             Action action =
                 () => procedure.Update(invalidName);
@@ -383,8 +367,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         {
             var invalidName = String.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
 
-            var validName = "Name valid";
-            var procedure = new DomainEntity.Procedure(validName, "Procedure Description", 120.12);
+            var procedure = _fixture.GetValidProcedure();
 
             Action action =
                 () => procedure.Update(invalidName);
@@ -399,8 +382,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         {
             var invalidDescription = String.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
 
-            var validDescription = "Procedure Description";
-            var procedure = new DomainEntity.Procedure("Name valid", validDescription, 120.12);
+            var procedure = _fixture.GetValidProcedure();
 
             Action action =
                 () => procedure.Update(null,invalidDescription);
