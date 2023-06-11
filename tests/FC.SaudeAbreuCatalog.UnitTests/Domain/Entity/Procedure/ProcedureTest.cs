@@ -1,4 +1,5 @@
 ﻿using FC.SaudeAbreuCatalgog.Domain.Exceptions;
+using FC.SaudeAbreuCatalgog.Domain.SeedWork;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Xunit;
 
@@ -115,7 +116,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         [InlineData(0)]
         [InlineData(5.3)]
-        [InlineData(49.99)]
+        [InlineData(29.99)]
         public void InstantiateErrorWhenValueIsMinor(double value)
         {
             Action action =
@@ -330,7 +331,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         [InlineData(0)]
         [InlineData(5.3)]
-        [InlineData(49.99)]
+        [InlineData(29.99)]
         public void UpdateErrorWhenValueIsMinor(double value)
         {
             var validValue = 120.12;

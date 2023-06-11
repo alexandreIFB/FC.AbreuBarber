@@ -1,11 +1,11 @@
 ﻿using FC.SaudeAbreuCatalgog.Domain.Exceptions;
+using FC.SaudeAbreuCatalgog.Domain.SeedWork;
 
 namespace FC.SaudeAbreuCatalgog.Domain.Entity
 {
-    public class Procedure
+    public class Procedure : AggregateRoot
     {
 
-        public Guid Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
 
@@ -17,8 +17,8 @@ namespace FC.SaudeAbreuCatalgog.Domain.Entity
 
 
         public Procedure(string name, string description, double value, bool isActive = true)
+            : base()
         {
-            Id = Guid.NewGuid();
             Name = name;
             Description = description;
             Value = value;
@@ -55,7 +55,7 @@ namespace FC.SaudeAbreuCatalgog.Domain.Entity
                 throw new EntityValidationException($"{nameof(Description)} should be less or equal 10_000 characters long");
             }
 
-            if (Value < 50.0)
+            if (Value < 30.0)
             {
                 throw new EntityValidationException($"{nameof(Value)} should not be less than 50");
             }
