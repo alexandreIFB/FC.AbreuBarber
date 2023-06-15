@@ -1,8 +1,11 @@
-﻿using FC.SaudeAbreuCatalgog.Domain.Entity;
+﻿using FC.SaudeAbreuCatalgog.Application.Interfaces;
+using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
+using FC.SaudeAbreuCatalgog.Domain.Entity;
 using FC.SaudeAbreuCatalgog.Domain.Repository;
+using FluentAssertions;
 using Moq;
 using Xunit;
-using UseCases = FC.SaudeAbreuCatalog.Application.UseCases.CreateProcedure;
+using UseCases = FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
 
 namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
 {
@@ -13,11 +16,11 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
         public async void CreateProcedure()
         {
             var repositoryMock = new Mock<IProcedureRepository>();
-            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            var unitOfWorkMock = new Mock<IUnityOfWork>();
 
-            var createUseCase = new UseCases.CreateProcedure(repositoryMock.Object, unitOfWorkMock.Object);
+            var createUseCase = new UseCases.CreateProcedure(unitOfWorkMock.Object , repositoryMock.Object);
 
-            var input = new CreateProcedureInput("Procedure Name", "Procedure Description", 40.50, true);
+            var input = new CreateProcedureInput("Procedure Name", 40.50, "Procedure Description",  true);
 
             var output = await createUseCase.Handle(input, CancellationToken.None);
 
@@ -28,13 +31,13 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
                 Times.Once());
             unitOfWorkMock.Verify(uow => uow.Commit(It.IsAny<CancellationToken>()), Times.Once());
 
-            output.ShouldNotBeNull();
-            output.Name.ShouldEqual("Procedure Name");
-            output.Description.ShouldEqual("Procedure Description");
-            output.Value.ShouldEqual(40.50);
-            output.IsActive.ShouldEqual(true);
-            (output.Id != null && output.Id != Guid.Empty).ShouldEqual(true);
-            (output.CreatedAt != null && output.CreatedAt != default(DateTime)).ShouldEqual(true);
+            output.Should().NotBeNull();
+            output.Name.Should().Be("Procedure Name");
+            output.Description.Should().Be("Procedure Description");
+            output.Value.Should().Be(40.50);
+            output.IsActive.Should().Be(true);
+            output.Id.Should().NotBeEmpty();
+            output.CreatedAt.Should().NotBeSameDateAs(default);
         }
     }
 }
