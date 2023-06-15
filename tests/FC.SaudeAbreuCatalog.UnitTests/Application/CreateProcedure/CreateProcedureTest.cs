@@ -1,4 +1,5 @@
 ﻿using FC.SaudeAbreuCatalgog.Domain.Entity;
+using FC.SaudeAbreuCatalgog.Domain.Repository;
 using Moq;
 using Xunit;
 using UseCases = FC.SaudeAbreuCatalog.Application.UseCases.CreateProcedure;
@@ -11,8 +12,8 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
         [Trait("Application", "CreateProcedure - Use Cases")]
         public async void CreateProcedure()
         {
-            var repositoryMock = new Mock<IProcedureRepository>;
-            var unitOfWorkMock = new Mock<IUnitOfWork>;
+            var repositoryMock = new Mock<IProcedureRepository>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             var createUseCase = new UseCases.CreateProcedure(repositoryMock.Object, unitOfWorkMock.Object);
 
@@ -20,7 +21,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
 
             var output = await createUseCase.Handle(input, CancellationToken.None);
 
-            repositoryMock.Verify(repository => repository.Create(
+            repositoryMock.Verify(repository => repository.Insert(
                     It.IsAny<Procedure>(),
                     It.IsAny<CancellationToken>()
                 ),
