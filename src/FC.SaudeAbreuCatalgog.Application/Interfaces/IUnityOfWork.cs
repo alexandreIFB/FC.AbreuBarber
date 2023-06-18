@@ -1,5 +1,4 @@
-﻿
-namespace FC.SaudeAbreuCatalgog.Application.Interfaces
+﻿namespace FC.AbreuBarber.Application.Interfaces
 {
     public interface IUnityOfWork
     {

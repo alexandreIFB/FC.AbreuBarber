@@ -1,7 +1,7 @@
-﻿using FC.SaudeAbreuCatalgog.Domain.Exceptions;
-using FC.SaudeAbreuCatalgog.Domain.SeedWork;
+﻿using FC.AbreuBarber.Domain.SeedWork;
+using FC.AbreuBarber.Domain.Exceptions;
 
-namespace FC.SaudeAbreuCatalgog.Domain.Entity
+namespace FC.AbreuBarber.Domain.Entity
 {
     public class Procedure : AggregateRoot
     {
@@ -30,7 +30,7 @@ namespace FC.SaudeAbreuCatalgog.Domain.Entity
 
         private void Validate()
         {
-            if (String.IsNullOrWhiteSpace(Name))
+            if (string.IsNullOrWhiteSpace(Name))
             {
                 throw new EntityValidationException($"{nameof(Name)} should not be empty or null");
             }

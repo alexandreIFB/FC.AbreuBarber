@@ -1,11 +1,11 @@
 ﻿using Bogus;
-using FC.SaudeAbreuCatalgog.Application.Interfaces;
-using FC.SaudeAbreuCatalgog.Domain.Repository;
-using FC.SaudeAbreuCatalog.UnitTests.Common;
+using FC.AbreuBarber.Application.Interfaces;
+using FC.AbreuBarber.Domain.Repository;
+using FC.AbreuBarber.UnitTests.Common;
 using Moq;
-using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+using DomainEntity = FC.AbreuBarber.Domain.Entity;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Application.Common
+namespace FC.AbreuBarber.UnitTests.Application.Common
 {
     public class ProcedureUseCaseFixture : BaseFixture
     {
@@ -27,7 +27,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Common
             return procedureDescription;
         }
 
-        public Double GetValidProcedureValue()
+        public double GetValidProcedureValue()
         {
             var procedureValue = Faker.Random.Double(30, 1000);
 
@@ -49,7 +49,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Common
             return procedureDescription;
         }
 
-        public DomainEntity.Procedure GetValidProcedure()
+        public AbreuBarber.Domain.Entity.Procedure GetValidProcedure()
         {
             return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), getRandomBoolean());
         }

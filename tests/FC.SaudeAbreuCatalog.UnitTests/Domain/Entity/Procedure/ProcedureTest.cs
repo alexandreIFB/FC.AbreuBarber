@@ -1,12 +1,10 @@
-﻿using FC.SaudeAbreuCatalgog.Domain.Entity;
-using FC.SaudeAbreuCatalgog.Domain.Exceptions;
-using FC.SaudeAbreuCatalgog.Domain.SeedWork;
+﻿using FC.AbreuBarber.Domain.Exceptions;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Xunit;
 
-using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+using DomainEntity = FC.AbreuBarber.Domain.Entity;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
+namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
 {
     [Collection(nameof(ProcedureTestFixture))]
     public class ProcedureTest
@@ -34,8 +32,8 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
             Assert.Equal(procedure.Name, validProcedure.Name);
             Assert.Equal(procedure.Description, validProcedure.Description);
             Assert.Equal(procedure.Value, validProcedure.Value);
-            Assert.NotEqual(procedure.Id, default(Guid));
-            Assert.NotEqual(procedure.CreatedAt, default(DateTime));
+            Assert.NotEqual(procedure.Id, default);
+            Assert.NotEqual(procedure.CreatedAt, default);
             // Fazendo separado para rastrear mais facilmente
             Assert.True(procedure.CreatedAt > dateTimeBefore);
             Assert.True(procedure.CreatedAt < dateTimeAfter);
@@ -65,8 +63,8 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
             Assert.Equal(procedure.Name, validProcedure.Name);
             Assert.Equal(procedure.Description, validProcedure.Description);
             Assert.Equal(procedure.Value, validProcedure.Value);
-            Assert.NotEqual(procedure.Id, default(Guid));
-            Assert.NotEqual(procedure.CreatedAt, default(DateTime));
+            Assert.NotEqual(procedure.Id, default);
+            Assert.NotEqual(procedure.CreatedAt, default);
             Assert.True(procedure.CreatedAt > dateTimeBefore);
             Assert.True(procedure.CreatedAt < dateTimeAfter);
             Assert.Equal(procedure.IsActive, isActive);
@@ -169,7 +167,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         public void InstantiateErrorWhenNameIsGreaterThan255Characters()
         {
-            var invalidName = String.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
+            var invalidName = string.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
 
             var validProcedure = _fixture.GetValidProcedure();
 
@@ -184,7 +182,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         public void InstantiateErrorWhenDescriptionIsGreaterThan10_000Characters()
         {
-            var invalidDescription = String.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
+            var invalidDescription = string.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
 
             var validProcedure = _fixture.GetValidProcedure();
 
@@ -263,7 +261,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
             var newDescription = _fixture.GetValidProcedureDescription();
 
 
-            validProcedure.Update(null,newDescription);
+            validProcedure.Update(null, newDescription);
 
 
             Assert.Equal(newDescription, validProcedure.Description);
@@ -283,7 +281,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
 
 
 
-            Assert.Equal(newValue,validProcedure.Value);
+            Assert.Equal(newValue, validProcedure.Value);
             Assert.Equal(oldName, validProcedure.Name);
             Assert.Equal(oldDescription, validProcedure.Description);
         }
@@ -367,7 +365,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         public void UpdateErrorWhenNameIsGreaterThan255Characters()
         {
-            var invalidName = String.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
+            var invalidName = string.Join(null, Enumerable.Range(1, 256).Select(_ => "a").ToArray());
 
             var procedure = _fixture.GetValidProcedure();
 
@@ -382,12 +380,12 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         [Trait("Domain", "Procedure -  Aggregates")]
         public void UpdateErrorWhenDescriptionIsGreaterThan10_000Characters()
         {
-            var invalidDescription = String.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
+            var invalidDescription = string.Join(null, Enumerable.Range(1, 10001).Select(_ => "a").ToArray());
 
             var procedure = _fixture.GetValidProcedure();
 
             Action action =
-                () => procedure.Update(null,invalidDescription);
+                () => procedure.Update(null, invalidDescription);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Description should be less or equal 10_000 characters long", exception.Message);

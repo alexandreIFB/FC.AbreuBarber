@@ -1,10 +1,10 @@
-﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.GetProcedure;
-using Moq;
-using UseCase = FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.GetProcedure;
+﻿using Moq;
+using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure;
 using Xunit;
 using FluentAssertions;
+using FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.GetProcedure
+namespace FC.AbreuBarber.UnitTests.Application.Procedure.GetProcedure
 {
     [Collection(nameof(GetProcedureTestFixture))]
     public class GetProcedureTest
@@ -41,7 +41,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.GetProcedure
             output.CreatedAt.Should().NotBeSameDateAs(default);
 
         }
-            
+
 
     }
 }

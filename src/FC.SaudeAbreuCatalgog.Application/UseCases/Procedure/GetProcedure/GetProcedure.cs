@@ -1,7 +1,7 @@
-﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common;
-using FC.SaudeAbreuCatalgog.Domain.Repository;
+﻿using FC.AbreuBarber.Application.UseCases.Procedure.Common;
+using FC.AbreuBarber.Domain.Repository;
 
-namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.GetProcedure
+namespace FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure
 {
     public class GetProcedure : IGetProcedure
     {

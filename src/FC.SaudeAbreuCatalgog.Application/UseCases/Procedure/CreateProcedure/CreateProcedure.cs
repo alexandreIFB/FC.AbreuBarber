@@ -1,10 +1,10 @@
-﻿using FC.SaudeAbreuCatalgog.Application.Interfaces;
-using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common;
-using FC.SaudeAbreuCatalgog.Domain.Repository;
-using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+﻿using FC.AbreuBarber.Application.Interfaces;
+using FC.AbreuBarber.Application.UseCases.Procedure.Common;
+using FC.AbreuBarber.Domain.Repository;
+using DomainEntity = FC.AbreuBarber.Domain.Entity;
 
 
-namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
+namespace FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure
 {
     public class CreateProcedure : ICreateProcedure
     {
@@ -19,9 +19,9 @@ namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
 
         public async Task<ProcedureModelOutput> Handle(CreateProcedureInput input, CancellationToken cancellationToken)
         {
-            var procedure = new DomainEntity.Procedure(input.Name,input.Description,input.Value,input.IsActive);
+            var procedure = new DomainEntity.Procedure(input.Name, input.Description, input.Value, input.IsActive);
 
-            await _procedureRepository.Insert(procedure,cancellationToken);
+            await _procedureRepository.Insert(procedure, cancellationToken);
             await _unityOfWork.Commit(cancellationToken);
 
             return ProcedureModelOutput.FromProcedure(procedure);

@@ -1,7 +1,7 @@
-﻿using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+﻿using DomainEntity = FC.AbreuBarber.Domain.Entity;
 
 
-namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common
+namespace FC.AbreuBarber.Application.UseCases.Procedure.Common
 {
     public class ProcedureModelOutput
     {
@@ -30,7 +30,7 @@ namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common
         }
 
 
-        public static ProcedureModelOutput FromProcedure(DomainEntity.Procedure procedure)
+        public static ProcedureModelOutput FromProcedure(Domain.Entity.Procedure procedure)
         {
             return new ProcedureModelOutput(procedure.Id,
                 procedure.Name, procedure.Value,

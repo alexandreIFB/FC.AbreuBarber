@@ -1,12 +1,11 @@
-﻿using FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure;
-using Moq;
+﻿using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure
+namespace FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure
 {
     public class CreateProcedureTestDataGenerator
     {

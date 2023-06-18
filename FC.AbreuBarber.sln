@@ -7,11 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4173D994-5A9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{74D5A705-EAE5-44AA-9973-D48186FB61F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.SaudeAbreuCatalog.UnitTests", "tests\FC.SaudeAbreuCatalog.UnitTests\FC.SaudeAbreuCatalog.UnitTests.csproj", "{B05FCFA6-B58A-46F2-87AE-B7CC55629315}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.AbreuBarber.UnitTests", "tests\FC.SaudeAbreuCatalog.UnitTests\FC.AbreuBarber.UnitTests.csproj", "{B05FCFA6-B58A-46F2-87AE-B7CC55629315}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.SaudeAbreuCatalgog.Domain", "src\FC.SaudeAbreuCatalgog.Domain\FC.SaudeAbreuCatalgog.Domain.csproj", "{EB7F5F27-96EB-452A-AF19-8ED93D2C2761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.AbreuBarber.Domain", "src\FC.SaudeAbreuCatalgog.Domain\FC.AbreuBarber.Domain.csproj", "{EB7F5F27-96EB-452A-AF19-8ED93D2C2761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FC.SaudeAbreuCatalgog.Application", "src\FC.SaudeAbreuCatalgog.Application\FC.SaudeAbreuCatalgog.Application.csproj", "{37091046-510F-4DB9-BE12-15BDAB8E8508}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.AbreuBarber.Application", "src\FC.SaudeAbreuCatalgog.Application\FC.AbreuBarber.Application.csproj", "{37091046-510F-4DB9-BE12-15BDAB8E8508}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

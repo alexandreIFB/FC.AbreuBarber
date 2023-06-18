@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FC.SaudeAbreuCatalgog.Domain\FC.SaudeAbreuCatalgog.Domain.csproj" />
+    <ProjectReference Include="..\FC.SaudeAbreuCatalgog.Domain\FC.AbreuBarber.Domain.csproj" />
   </ItemGroup>
 
 </Project>

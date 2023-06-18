@@ -1,6 +1,4 @@
-﻿
-
-namespace FC.SaudeAbreuCatalgog.Domain.Exceptions
+﻿namespace FC.AbreuBarber.Domain.Exceptions
 {
     public class EntityValidationException : Exception
     {

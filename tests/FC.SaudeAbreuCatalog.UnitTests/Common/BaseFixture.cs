@@ -1,6 +1,6 @@
 ﻿using Bogus;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Common
+namespace FC.AbreuBarber.UnitTests.Common
 {
     public abstract class BaseFixture
     {

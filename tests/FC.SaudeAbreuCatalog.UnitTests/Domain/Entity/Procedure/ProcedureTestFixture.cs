@@ -1,13 +1,10 @@
 ﻿
 using Bogus;
-using FC.SaudeAbreuCatalog.UnitTests.Common;
-using FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure;
+using FC.AbreuBarber.UnitTests.Common;
+using FC.AbreuBarber.UnitTests.Domain.Entity.Procedure;
 using Xunit;
-using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
 
-
-
-namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
+namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
 {
     public class ProcedureTestFixture : BaseFixture
     {
@@ -29,7 +26,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
             return procedureDescription;
         }
 
-        public Double GetValidProcedureValue()
+        public double GetValidProcedureValue()
         {
             var procedureValue = Faker.Random.Double(30, 1000);
 
@@ -48,8 +45,8 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
             return procedureDescription;
         }
 
-        public DomainEntity.Procedure GetValidProcedure() 
-            => new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue() );
+        public AbreuBarber.Domain.Entity.Procedure GetValidProcedure()
+            => new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue());
     }
 }
 

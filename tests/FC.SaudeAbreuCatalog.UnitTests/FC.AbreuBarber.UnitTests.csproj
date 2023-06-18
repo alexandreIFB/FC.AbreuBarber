@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FC.SaudeAbreuCatalgog.Application\FC.SaudeAbreuCatalgog.Application.csproj" />
-    <ProjectReference Include="..\..\src\FC.SaudeAbreuCatalgog.Domain\FC.SaudeAbreuCatalgog.Domain.csproj" />
+    <ProjectReference Include="..\..\src\FC.SaudeAbreuCatalgog.Application\FC.AbreuBarber.Application.csproj" />
+    <ProjectReference Include="..\..\src\FC.SaudeAbreuCatalgog.Domain\FC.AbreuBarber.Domain.csproj" />
   </ItemGroup>
 
 </Project>

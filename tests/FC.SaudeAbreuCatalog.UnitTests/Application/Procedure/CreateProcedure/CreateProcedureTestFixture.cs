@@ -1,11 +1,9 @@
 ﻿using Bogus.DataSets;
-using FC.SaudeAbreuCatalgog.Application.Interfaces;
-using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
-using FC.SaudeAbreuCatalgog.Domain.Repository;
-using FC.SaudeAbreuCatalog.UnitTests.Application.Common;
-using FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure;
-using FC.SaudeAbreuCatalog.UnitTests.Common;
-using FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure;
+using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
+using FC.AbreuBarber.UnitTests.Application.Common;
+using FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure;
+using FC.AbreuBarber.Domain.Repository;
+
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -14,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure
+namespace FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure
 {
     public class CreateProcedureTestFixture : ProcedureUseCaseFixture
     {

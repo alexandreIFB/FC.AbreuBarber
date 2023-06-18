@@ -1,14 +1,11 @@
-﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
-using FC.SaudeAbreuCatalgog.Domain.Exceptions;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Moq;
 using Xunit;
-using UseCases = FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
-using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
+using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
+using FC.AbreuBarber.Domain.Exceptions;
 
-
-
-namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure
+namespace FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure
 {
 
     [Collection(nameof(CreateProcedureTestFixture))]
@@ -27,14 +24,14 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure
             var repositoryMock = _fixture.GetRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
 
-            var createUseCase = new UseCases.CreateProcedure(unitOfWorkMock.Object, repositoryMock.Object);
+            var createUseCase = new UseCase.CreateProcedure(unitOfWorkMock.Object, repositoryMock.Object);
 
             var input = _fixture.GetValidInput();
 
             var output = await createUseCase.Handle(input, CancellationToken.None);
 
             repositoryMock.Verify(repository => repository.Insert(
-                    It.IsAny<DomainEntity.Procedure>(),
+                    It.IsAny<AbreuBarber.Domain.Entity.Procedure>(),
                     It.IsAny<CancellationToken>()
                 ),
                 Times.Once());
@@ -58,7 +55,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure
         )]
         public async void ThrowWhenCantIntantiate(CreateProcedureInput invalidInput, string expectionMessage)
         {
-            var createUseCase = new UseCases.CreateProcedure(
+            var createUseCase = new UseCase.CreateProcedure(
                 _fixture.GetUnitOfWorkMock().Object,
                 _fixture.GetRepositoryMock().Object
             );

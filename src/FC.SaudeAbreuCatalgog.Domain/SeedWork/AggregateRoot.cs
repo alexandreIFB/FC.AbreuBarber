@@ -1,9 +1,8 @@
-﻿
-namespace FC.SaudeAbreuCatalgog.Domain.SeedWork
+﻿namespace FC.AbreuBarber.Domain.SeedWork
 {
     public abstract class AggregateRoot : Entity
     {
-        protected AggregateRoot(): base() { }
-        
+        protected AggregateRoot() : base() { }
+
     }
 }

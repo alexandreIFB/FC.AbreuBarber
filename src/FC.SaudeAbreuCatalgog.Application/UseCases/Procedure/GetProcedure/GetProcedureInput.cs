@@ -1,12 +1,7 @@
-﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common;
+﻿using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.GetProcedure
+namespace FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure
 {
     public class GetProcedureInput : IRequest<ProcedureModelOutput>
     {

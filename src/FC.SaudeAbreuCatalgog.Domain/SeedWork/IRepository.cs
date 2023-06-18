@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FC.SaudeAbreuCatalgog.Domain.SeedWork
+namespace FC.AbreuBarber.Domain.SeedWork
 {
     public interface IRepository
     {

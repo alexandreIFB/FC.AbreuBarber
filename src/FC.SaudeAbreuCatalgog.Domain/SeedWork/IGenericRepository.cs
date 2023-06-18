@@ -1,6 +1,6 @@
-﻿using FC.SaudeAbreuCatalgog.Domain.Entity;
+﻿using FC.AbreuBarber.Domain.Entity;
 
-namespace FC.SaudeAbreuCatalgog.Domain.SeedWork
+namespace FC.AbreuBarber.Domain.SeedWork
 {
     public interface IGenericRepository<TAggregate> : IRepository
     {

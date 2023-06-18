@@ -1,7 +1,7 @@
-﻿using FC.SaudeAbreuCatalgog.Domain.Entity;
-using FC.SaudeAbreuCatalgog.Domain.SeedWork;
+﻿using FC.AbreuBarber.Domain.Entity;
+using FC.AbreuBarber.Domain.SeedWork;
 
-namespace FC.SaudeAbreuCatalgog.Domain.Repository
+namespace FC.AbreuBarber.Domain.Repository
 {
     public interface IProcedureRepository : IGenericRepository<Procedure>
     { }

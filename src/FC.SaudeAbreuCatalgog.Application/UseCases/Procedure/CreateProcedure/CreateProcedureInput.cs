@@ -1,7 +1,7 @@
-﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common;
+﻿using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using MediatR;
 
-namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
+namespace FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure
 {
     public class CreateProcedureInput : IRequest<ProcedureModelOutput>
     {
