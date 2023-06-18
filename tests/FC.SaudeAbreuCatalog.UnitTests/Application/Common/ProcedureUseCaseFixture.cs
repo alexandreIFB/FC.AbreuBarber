@@ -1,5 +1,8 @@
 ﻿using Bogus;
+using FC.SaudeAbreuCatalgog.Application.Interfaces;
+using FC.SaudeAbreuCatalgog.Domain.Repository;
 using FC.SaudeAbreuCatalog.UnitTests.Common;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,5 +52,8 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Common
             var procedureDescription = Faker.Lorem.Paragraph();
             return procedureDescription;
         }
+
+        public Mock<IProcedureRepository> GetRepositoryMock() => new();
+        public Mock<IUnityOfWork> GetUnitOfWorkMock() => new();
     }
 }

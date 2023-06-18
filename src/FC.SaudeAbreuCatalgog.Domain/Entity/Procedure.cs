@@ -57,7 +57,7 @@ namespace FC.SaudeAbreuCatalgog.Domain.Entity
 
             if (Value < 30.0)
             {
-                throw new EntityValidationException($"{nameof(Value)} should not be less than 50");
+                throw new EntityValidationException($"{nameof(Value)} should not be less than 30");
             }
 
             if (Value > 1000.0)

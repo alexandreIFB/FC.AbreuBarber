@@ -130,7 +130,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
                 () => new DomainEntity.Procedure(validProcedure.Name, validProcedure.Description, value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
-            Assert.Equal("Value should not be less than 50", exception.Message);
+            Assert.Equal("Value should not be less than 30", exception.Message);
         }
 
         [Theory(DisplayName = nameof(InstantiateErrorWhenValueIsBigger))]
@@ -329,7 +329,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
                 () => procedure.Update(null, null, value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
-            Assert.Equal("Value should not be less than 50", exception.Message);
+            Assert.Equal("Value should not be less than 30", exception.Message);
         }
 
         [Theory(DisplayName = nameof(UpdateErrorWhenValueIsBigger))]

@@ -1,8 +1,6 @@
-﻿using FC.SaudeAbreuCatalgog.Application.Interfaces;
-using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
+﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
 using FC.SaudeAbreuCatalgog.Domain.Entity;
-using FC.SaudeAbreuCatalgog.Domain.Repository;
-using FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure;
+using FC.SaudeAbreuCatalgog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -24,8 +22,8 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
         [Trait("Application", "CreateProcedure - Use Cases")]
         public async void CreateProcedure()
         {
-            var repositoryMock = new Mock<IProcedureRepository>();
-            var unitOfWorkMock = new Mock<IUnityOfWork>();
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
 
             var createUseCase = new UseCases.CreateProcedure(unitOfWorkMock.Object , repositoryMock.Object);
 
@@ -49,6 +47,23 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
             output.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
+        [Theory(DisplayName = nameof(CreateProcedureThrowWhenCantIntantiate))]
+        [Trait("Application", "CreateProcedure - Use Cases")]
+        [MemberData(
+            nameof(CreateProcedureTestDataGenerator.GetInvalidInputs),
+            parameters: 24,
+            MemberType = typeof(CreateProcedureTestDataGenerator)
+        )]
+        public async void CreateProcedureThrowWhenCantIntantiate(CreateProcedureInput invalidInput, string expectionMessage)
+        {
+            var createUseCase = new UseCases.CreateProcedure(
+                _fixture.GetUnitOfWorkMock().Object,
+                _fixture.GetRepositoryMock().Object
+            );
 
+            Func<Task> task = async () => await createUseCase.Handle(invalidInput, CancellationToken.None);
+
+            await task.Should().ThrowAsync<EntityValidationException>();
+        }
     }
 }
