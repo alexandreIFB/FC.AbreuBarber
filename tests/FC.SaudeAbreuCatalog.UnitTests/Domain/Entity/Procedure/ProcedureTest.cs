@@ -1,4 +1,5 @@
-﻿using FC.SaudeAbreuCatalgog.Domain.Exceptions;
+﻿using FC.SaudeAbreuCatalgog.Domain.Entity;
+using FC.SaudeAbreuCatalgog.Domain.Exceptions;
 using FC.SaudeAbreuCatalgog.Domain.SeedWork;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Xunit;
@@ -12,7 +13,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
     {
         private readonly ProcedureTestFixture _fixture;
 
-        public ProcedureTest() => _fixture = new ProcedureTestFixture();
+        public ProcedureTest(ProcedureTestFixture procedureTestFixture) => _fixture = procedureTestFixture;
 
         [Fact(DisplayName = nameof(Instantiate))]
         [Trait("Domain", "Procedure -  Aggregates")]
@@ -258,16 +259,15 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         public void UpdateOnlyDescription()
         {
             var validProcedure = _fixture.GetValidProcedure();
-            var procedure = _fixture.GetValidProcedure();
-            var newDescription = "New Procedure Valide Description";
+            var oldName = validProcedure.Name;
+            var newDescription = _fixture.GetValidProcedureDescription();
 
 
-            procedure.Update(null,newDescription);
+            validProcedure.Update(null,newDescription);
 
 
-            Assert.Equal(newDescription, procedure.Description);
-            Assert.Equal(validProcedure.Name, procedure.Name);
-            Assert.Equal(validProcedure.Value, procedure.Value);
+            Assert.Equal(newDescription, validProcedure.Description);
+            Assert.Equal(validProcedure.Name, oldName);
         }
 
         [Fact(DisplayName = nameof(UpdateOnlyValue))]
@@ -275,15 +275,17 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
         public void UpdateOnlyValue()
         {
             var validProcedure = _fixture.GetValidProcedure();
-            var procedure = _fixture.GetValidProcedure();
-            var newValue = 111.9;
+            var oldName = validProcedure.Name;
+            var oldDescription = validProcedure.Description;
+            var newValue = _fixture.GetValidProcedureValue();
 
-            procedure.Update(null, null, newValue);
+            validProcedure.Update(null, null, newValue);
 
 
-            Assert.Equal(newValue,procedure.Value);
-            Assert.Equal(validProcedure.Name, procedure.Name);
-            Assert.Equal(validProcedure.Description, procedure.Description);
+
+            Assert.Equal(newValue,validProcedure.Value);
+            Assert.Equal(oldName, validProcedure.Name);
+            Assert.Equal(oldDescription, validProcedure.Description);
         }
 
         [Theory(DisplayName = nameof(UpdateErrorWhenNameIsEmpty))]

@@ -1,14 +1,14 @@
-﻿
-using Bogus;
+﻿using Bogus;
 using FC.SaudeAbreuCatalog.UnitTests.Common;
-using FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure;
-using Xunit;
-using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-
-namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
+namespace FC.SaudeAbreuCatalog.UnitTests.Application.Common
 {
-    public class ProcedureTestFixture : BaseFixture
+    public class ProcedureUseCaseFixture : BaseFixture
     {
         public string GetValidProcedureName()
         {
@@ -35,6 +35,9 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
             return procedureValue;
         }
 
+        public bool getRandomBoolean()
+        => new Random().NextDouble() < 0.5;
+
         private string GenerateProcedureName()
         {
             var procedureName = Faker.Lorem.Sentence(2);
@@ -46,11 +49,5 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
             var procedureDescription = Faker.Lorem.Paragraph();
             return procedureDescription;
         }
-
-        public DomainEntity.Procedure GetValidProcedure() 
-            => new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue() );
     }
 }
-
-[CollectionDefinition(nameof(ProcedureTestFixture))]
-public class ProcedureTestFixtureCollection : ICollectionFixture<ProcedureTestFixture> { }

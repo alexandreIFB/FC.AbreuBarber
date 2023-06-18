@@ -1,4 +1,7 @@
-﻿using FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure;
+﻿using Bogus.DataSets;
+using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
+using FC.SaudeAbreuCatalog.UnitTests.Application.Common;
+using FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure;
 using FC.SaudeAbreuCatalog.UnitTests.Common;
 using FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure;
 using System;
@@ -10,8 +13,15 @@ using Xunit;
 
 namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
 {
-    public class CreateProcedureTestFixture : BaseFixture
+    public class CreateProcedureTestFixture : ProcedureUseCaseFixture
     {
+        public CreateProcedureInput GetValidInput()
+        {
+            return new CreateProcedureInput(GetValidProcedureName(),
+                GetValidProcedureValue(),GetValidProcedureDescription(),
+                getRandomBoolean() 
+               );
+        }
     }
 }
 
