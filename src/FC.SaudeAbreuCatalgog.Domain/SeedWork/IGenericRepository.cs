@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FC.SaudeAbreuCatalgog.Domain.Entity;
 
 namespace FC.SaudeAbreuCatalgog.Domain.SeedWork
 {
     public interface IGenericRepository<TAggregate> : IRepository
     {
         public Task Insert(TAggregate aggregate, CancellationToken cancellationToken);
+        public Task<Procedure> Get(Guid id, CancellationToken cancellationToken);
     }
 }

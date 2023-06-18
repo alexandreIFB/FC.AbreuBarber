@@ -6,6 +6,7 @@ using Xunit;
 using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
 
 
+
 namespace FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure
 {
     public class ProcedureTestFixture : BaseFixture

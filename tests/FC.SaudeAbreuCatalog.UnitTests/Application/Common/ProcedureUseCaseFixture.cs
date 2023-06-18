@@ -3,11 +3,7 @@ using FC.SaudeAbreuCatalgog.Application.Interfaces;
 using FC.SaudeAbreuCatalgog.Domain.Repository;
 using FC.SaudeAbreuCatalog.UnitTests.Common;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
 
 namespace FC.SaudeAbreuCatalog.UnitTests.Application.Common
 {
@@ -51,6 +47,11 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Common
         {
             var procedureDescription = Faker.Lorem.Paragraph();
             return procedureDescription;
+        }
+
+        public DomainEntity.Procedure GetValidProcedure()
+        {
+            return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), getRandomBoolean());
         }
 
         public Mock<IProcedureRepository> GetRepositoryMock() => new();

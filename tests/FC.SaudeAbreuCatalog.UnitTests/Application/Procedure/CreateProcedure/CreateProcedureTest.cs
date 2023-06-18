@@ -1,12 +1,14 @@
 ﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
-using FC.SaudeAbreuCatalgog.Domain.Entity;
 using FC.SaudeAbreuCatalgog.Domain.Exceptions;
 using FluentAssertions;
 using Moq;
 using Xunit;
 using UseCases = FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
+using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
+
+
+namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure
 {
 
     [Collection(nameof(CreateProcedureTestFixture))]
@@ -25,14 +27,14 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
             var repositoryMock = _fixture.GetRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
 
-            var createUseCase = new UseCases.CreateProcedure(unitOfWorkMock.Object , repositoryMock.Object);
+            var createUseCase = new UseCases.CreateProcedure(unitOfWorkMock.Object, repositoryMock.Object);
 
             var input = _fixture.GetValidInput();
 
             var output = await createUseCase.Handle(input, CancellationToken.None);
 
             repositoryMock.Verify(repository => repository.Insert(
-                    It.IsAny<Procedure>(),
+                    It.IsAny<DomainEntity.Procedure>(),
                     It.IsAny<CancellationToken>()
                 ),
                 Times.Once());

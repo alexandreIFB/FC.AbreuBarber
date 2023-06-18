@@ -3,7 +3,7 @@ using FC.SaudeAbreuCatalgog.Application.Interfaces;
 using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure;
 using FC.SaudeAbreuCatalgog.Domain.Repository;
 using FC.SaudeAbreuCatalog.UnitTests.Application.Common;
-using FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure;
+using FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure;
 using FC.SaudeAbreuCatalog.UnitTests.Common;
 using FC.SaudeAbreuCatalog.UnitTests.Domain.Entity.Procedure;
 using Moq;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
+namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.CreateProcedure
 {
     public class CreateProcedureTestFixture : ProcedureUseCaseFixture
     {
