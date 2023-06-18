@@ -39,5 +39,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
             output.Id.Should().NotBeEmpty();
             output.CreatedAt.Should().NotBeSameDateAs(default);
         }
+
+
     }
 }
