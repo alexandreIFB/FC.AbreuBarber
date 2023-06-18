@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+
 
 namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
 {
@@ -32,6 +31,14 @@ namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
             CreatedAt = createdAt;
         }
 
+
+        public static CreateProcedureOutput FromProcedure(DomainEntity.Procedure procedure)
+        {
+            return new CreateProcedureOutput(procedure.Id,
+                procedure.Name, procedure.Value,
+                procedure.Description, procedure.IsActive,
+                procedure.CreatedAt);
+        }
 
     }
 }

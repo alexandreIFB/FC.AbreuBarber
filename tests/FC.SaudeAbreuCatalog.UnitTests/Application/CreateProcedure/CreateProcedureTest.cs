@@ -18,7 +18,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
         public CreateProcedureTest(CreateProcedureTestFixture createProcedureTestFixture) => _fixture = createProcedureTestFixture;
 
 
-        [Fact(DisplayName = nameof(CreateProcedure))]
+        [Fact(DisplayName = nameof(ThrowWhenCantIntantiate))]
         [Trait("Application", "CreateProcedure - Use Cases")]
         public async void CreateProcedure()
         {
@@ -47,14 +47,14 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
             output.CreatedAt.Should().NotBeSameDateAs(default);
         }
 
-        [Theory(DisplayName = nameof(CreateProcedureThrowWhenCantIntantiate))]
+        [Theory(DisplayName = nameof(ThrowWhenCantIntantiate))]
         [Trait("Application", "CreateProcedure - Use Cases")]
         [MemberData(
             nameof(CreateProcedureTestDataGenerator.GetInvalidInputs),
-            parameters: 24,
+            parameters: 30,
             MemberType = typeof(CreateProcedureTestDataGenerator)
         )]
-        public async void CreateProcedureThrowWhenCantIntantiate(CreateProcedureInput invalidInput, string expectionMessage)
+        public async void ThrowWhenCantIntantiate(CreateProcedureInput invalidInput, string expectionMessage)
         {
             var createUseCase = new UseCases.CreateProcedure(
                 _fixture.GetUnitOfWorkMock().Object,
@@ -63,7 +63,7 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.CreateProcedure
 
             Func<Task> task = async () => await createUseCase.Handle(invalidInput, CancellationToken.None);
 
-            await task.Should().ThrowAsync<EntityValidationException>();
+            await task.Should().ThrowAsync<EntityValidationException>().WithMessage(expectionMessage);
         }
     }
 }

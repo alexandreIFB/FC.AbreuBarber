@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
 {
-    public class CreateProcedureInput
+    public class CreateProcedureInput : IRequest<CreateProcedureOutput>
     {
         public string Name { get; set; }
         public string Description { get; set; }
