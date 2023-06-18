@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common;
+using MediatR;
 
 namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
 {
-    public interface ICreateProcedure : IRequestHandler<CreateProcedureInput,CreateProcedureOutput>
+    public interface ICreateProcedure : IRequestHandler<CreateProcedureInput, ProcedureModelOutput>
     {
-        public Task<CreateProcedureOutput> Handle(CreateProcedureInput input, CancellationToken cancellationToken);
+        public Task<ProcedureModelOutput> Handle(CreateProcedureInput input, CancellationToken cancellationToken);
     }
 }

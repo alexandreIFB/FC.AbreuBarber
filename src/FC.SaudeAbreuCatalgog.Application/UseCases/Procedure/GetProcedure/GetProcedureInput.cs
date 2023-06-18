@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.GetProcedure
 {
-    public class GetProcedureInput : IRequest<GetProcedureOutput>
+    public class GetProcedureInput : IRequest<ProcedureModelOutput>
     {
         public Guid Id { get; set; }
 

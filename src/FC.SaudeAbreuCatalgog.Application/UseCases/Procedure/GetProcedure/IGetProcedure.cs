@@ -1,10 +1,11 @@
-﻿using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+﻿using FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common;
+using MediatR;
 
 
 namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.GetProcedure
 {
-    public interface IGetProcedure
+    public interface IGetProcedure : IRequestHandler<GetProcedureInput, ProcedureModelOutput>
     {
-        public Task<DomainEntity.Procedure> Handle(GetProcedureInput input,CancellationToken cancellationToken);
+        public Task<ProcedureModelOutput> Handle(GetProcedureInput input,CancellationToken cancellationToken);
     }
 }

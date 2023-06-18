@@ -1,11 +1,9 @@
-﻿
-
-using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
+﻿using DomainEntity = FC.SaudeAbreuCatalgog.Domain.Entity;
 
 
-namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
+namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.Common
 {
-    public class CreateProcedureOutput
+    public class ProcedureModelOutput
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -15,7 +13,7 @@ namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
 
         public DateTime CreatedAt { get; set; }
 
-        public CreateProcedureOutput(
+        public ProcedureModelOutput(
                 Guid id,
                 string name,
                 double value, string description,
@@ -32,9 +30,9 @@ namespace FC.SaudeAbreuCatalgog.Application.UseCases.Procedure.CreateProcedure
         }
 
 
-        public static CreateProcedureOutput FromProcedure(DomainEntity.Procedure procedure)
+        public static ProcedureModelOutput FromProcedure(DomainEntity.Procedure procedure)
         {
-            return new CreateProcedureOutput(procedure.Id,
+            return new ProcedureModelOutput(procedure.Id,
                 procedure.Name, procedure.Value,
                 procedure.Description, procedure.IsActive,
                 procedure.CreatedAt);

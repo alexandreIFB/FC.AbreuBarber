@@ -19,12 +19,9 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.GetProcedure
         public async Task GetProcedure()
         {
             var repositoryMock = _fixture.GetRepositoryMock();
-            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
-            var getUseCase = new UseCase.GetProcedure(unitOfWorkMock.Object, repositoryMock.Object);
-
-
             var exampleProcedure = _fixture.GetValidProcedure();
 
+            var getUseCase = new UseCase.GetProcedure(repositoryMock.Object);
             repositoryMock.Setup(x => x.Get(
                 It.IsAny<Guid>(),
                 It.IsAny<CancellationToken>()
@@ -33,9 +30,15 @@ namespace FC.SaudeAbreuCatalog.UnitTests.Application.Procedure.GetProcedure
             var input = new GetProcedureInput(exampleProcedure.Id);
 
 
-            var procedure = await getUseCase.Handle(input, CancellationToken.None);
+            var output = await getUseCase.Handle(input, CancellationToken.None);
 
-            procedure.Id.Should().Be(exampleProcedure.Id);
+            output.Should().NotBeNull();
+            output.Name.Should().Be(exampleProcedure.Name);
+            output.Description.Should().Be(exampleProcedure.Description);
+            output.Value.Should().Be(exampleProcedure.Value);
+            output.IsActive.Should().Be(exampleProcedure.IsActive);
+            output.Id.Should().NotBeEmpty();
+            output.CreatedAt.Should().NotBeSameDateAs(default);
 
         }
             
