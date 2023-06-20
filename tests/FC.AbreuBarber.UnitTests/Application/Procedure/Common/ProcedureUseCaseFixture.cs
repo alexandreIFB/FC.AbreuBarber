@@ -5,7 +5,7 @@ using FC.AbreuBarber.UnitTests.Common;
 using Moq;
 using DomainEntity = FC.AbreuBarber.Domain.Entity;
 
-namespace FC.AbreuBarber.UnitTests.Application.Common
+namespace FC.AbreuBarber.UnitTests.Application.Procedure.Common
 {
     public class ProcedureUseCaseFixture : BaseFixture
     {
@@ -49,7 +49,7 @@ namespace FC.AbreuBarber.UnitTests.Application.Common
             return procedureDescription;
         }
 
-        public AbreuBarber.Domain.Entity.Procedure GetValidProcedure()
+        public DomainEntity.Procedure GetValidProcedure()
         {
             return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), getRandomBoolean());
         }

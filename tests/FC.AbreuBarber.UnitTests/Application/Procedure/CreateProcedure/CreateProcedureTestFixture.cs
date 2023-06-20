@@ -1,6 +1,5 @@
 ﻿using Bogus.DataSets;
 using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
-using FC.AbreuBarber.UnitTests.Application.Common;
 using FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure;
 using FC.AbreuBarber.Domain.Repository;
 
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using FC.AbreuBarber.UnitTests.Application.Procedure.Common;
 
 namespace FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure
 {

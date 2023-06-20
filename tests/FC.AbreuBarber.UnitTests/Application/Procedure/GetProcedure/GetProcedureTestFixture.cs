@@ -1,4 +1,4 @@
-﻿using FC.AbreuBarber.UnitTests.Application.Common;
+﻿using FC.AbreuBarber.UnitTests.Application.Procedure.Common;
 using FC.AbreuBarber.UnitTests.Application.Procedure.GetProcedure;
 using Xunit;
 
