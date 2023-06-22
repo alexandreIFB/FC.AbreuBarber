@@ -1,4 +1,5 @@
-﻿using FC.AbreuBarber.Application.UseCases.Procedure.Common;
+﻿using FC.AbreuBarber.Application.Exceptions;
+using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.Domain.Repository;
 
 namespace FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure
@@ -15,6 +16,11 @@ namespace FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure
         public async Task<ProcedureModelOutput> Handle(GetProcedureInput input, CancellationToken cancellationToken)
         {
             var procedure = await _procedureRepository.Get(input.Id, cancellationToken);
+
+            if(procedure == null)
+            {
+                throw new NotFoundException($"Procedure '{input.Id}' Not Found");
+            }
 
             return ProcedureModelOutput.FromProcedure(procedure);
         }

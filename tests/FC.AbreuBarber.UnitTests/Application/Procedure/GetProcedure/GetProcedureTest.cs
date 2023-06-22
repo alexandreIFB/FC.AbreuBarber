@@ -3,6 +3,7 @@ using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure;
 using Xunit;
 using FluentAssertions;
 using FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure;
+using FC.AbreuBarber.Application.Exceptions;
 
 namespace FC.AbreuBarber.UnitTests.Application.Procedure.GetProcedure
 {
@@ -43,5 +44,25 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.GetProcedure
         }
 
 
+        [Fact(DisplayName = nameof(NotFoundExceptionProcedure))]
+        [Trait("Application", "GetProcedure - Use Cases")]
+        public async void NotFoundExceptionProcedure()
+        {
+            var repositoryMock = _fixture.GetRepositoryMock();
+
+            var exampleGuid = Guid.NewGuid();
+
+            var getUseCase = new UseCase.GetProcedure(repositoryMock.Object);
+            repositoryMock.Setup(x => x.Get(
+                It.IsAny<Guid>(),
+                It.IsAny<CancellationToken>()
+            )).ThrowsAsync(new NotFoundException($"Procedure '{exampleGuid}' Not Found"));
+
+            var input = new GetProcedureInput(exampleGuid);
+
+            Func<Task> task = async () => await getUseCase.Handle(input, CancellationToken.None);
+
+            await task.Should().ThrowAsync<NotFoundException>();
+        }
     }
 }
