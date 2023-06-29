@@ -1,8 +1,9 @@
 ﻿using FC.AbreuBarber.Application.UseCases.Procedure.Common;
+using FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
 using FluentAssertions;
 using Moq;
 using Xunit;
-using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure;
+using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
 
 namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
 {
@@ -28,9 +29,10 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
 
             var updateUseCase = new UseCase.UpdateProcedure(repositoryMock.Object, unitOfWorkMock.Object);
             var input = new UpdateProcedureInput(
+                exampleProcedure.Id,
                 _fixture.GetValidProcedureName(),
-                _fixture.GetValidProcedureDescription(),
                 _fixture.GetValidProcedureValue(),
+                _fixture.GetValidProcedureDescription(),
                 !exampleProcedure.IsActive
             );
 
@@ -40,7 +42,7 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
             output.Name.Should().Be(input.Name);
             output.Description.Should().Be(input.Description);
             output.Value.Should().Be(input.Value);
-            output.IsActive.Should().Be(input.IsActive);
+            output.IsActive.Should().Be((bool)input.IsActive!);
 
             repositoryMock.Verify(x => x.Get(
                 It.IsAny<Guid>(),
