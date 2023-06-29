@@ -3,6 +3,7 @@
 using FC.AbreuBarber.Application.Exceptions;
 using FC.AbreuBarber.Application.Interfaces;
 using FC.AbreuBarber.Domain.Repository;
+using MediatR;
 
 namespace FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure
 {
@@ -21,11 +22,8 @@ namespace FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure
         public async Task Handle(DeleteProcedureInput input, CancellationToken cancellationToken)
         {
             var procedureForDelete = await _procedureRepository.Get(input.Id, cancellationToken);
-            if (procedureForDelete == null) {
-                throw new NotFoundException($"Procedure '{input.Id}' Not Found");
-            }
-
             await _procedureRepository.Delete(procedureForDelete, cancellationToken);
+            await _unityOfWork.Commit(cancellationToken);
         }
     }
 }

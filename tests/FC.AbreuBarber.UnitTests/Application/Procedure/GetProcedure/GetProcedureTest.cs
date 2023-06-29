@@ -58,13 +58,20 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.GetProcedure
             repositoryMock.Setup(x => x.Get(
                 It.IsAny<Guid>(),
                 It.IsAny<CancellationToken>()
-            )).ReturnsAsync((DomainEntity.Procedure?)null);
+            )).ThrowsAsync(
+            new NotFoundException($"Procedure '{exampleGuid}' not found")
+            );
 
             var input = new GetProcedureInput(exampleGuid);
 
             Func<Task> task = async () => await getUseCase.Handle(input, CancellationToken.None);
 
-            await task.Should().ThrowAsync<NotFoundException>().WithMessage($"Procedure '{exampleGuid}' Not Found");
+            await task.Should().ThrowAsync<NotFoundException>();
+
+            repositoryMock.Verify(x => x.Get(
+                It.IsAny<Guid>(),
+                It.IsAny<CancellationToken>()
+            ), Times.Once);
         }
     }
 }

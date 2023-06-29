@@ -4,7 +4,6 @@ using FluentAssertions;
 using Moq;
 using Xunit;
 using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure;
-using DomainEntity = FC.AbreuBarber.Domain.Entity;
 
 
 namespace FC.AbreuBarber.UnitTests.Application.Procedure.DeleteProcedure
@@ -55,14 +54,21 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.DeleteProcedure
             repositoryMock.Setup(x => x.Get(
                 It.IsAny<Guid>(),
                 It.IsAny<CancellationToken>()
-            )).ReturnsAsync((DomainEntity.Procedure?)null);
+            )).ThrowsAsync(
+            new NotFoundException($"Procedure '{exampleGuid}' not found")
+            );
 
 
             var deleteUseCase = new UseCase.DeleteProcedure(repositoryMock.Object, unitOfWorkMock.Object);
             var input = new DeleteProcedureInput(exampleGuid);
             Func<Task> task = async () => await deleteUseCase.Handle(input, CancellationToken.None);
 
-            await task.Should().ThrowAsync<NotFoundException>().WithMessage($"Procedure '{input.Id}' Not Found");
+            await task.Should().ThrowAsync<NotFoundException>();
+
+            repositoryMock.Verify(x => x.Get(
+                It.IsAny<Guid>(),
+                It.IsAny<CancellationToken>()
+            ), Times.Once);
         }
     }
 }

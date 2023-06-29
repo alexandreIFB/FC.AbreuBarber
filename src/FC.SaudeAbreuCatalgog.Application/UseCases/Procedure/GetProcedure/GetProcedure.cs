@@ -17,11 +17,6 @@ namespace FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure
         {
             var procedure = await _procedureRepository.Get(input.Id, cancellationToken);
 
-            if(procedure == null)
-            {
-                throw new NotFoundException($"Procedure '{input.Id}' Not Found");
-            }
-
             return ProcedureModelOutput.FromProcedure(procedure);
         }
     }

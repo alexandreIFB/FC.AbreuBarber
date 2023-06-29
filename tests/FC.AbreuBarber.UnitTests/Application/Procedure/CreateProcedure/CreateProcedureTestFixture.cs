@@ -4,11 +4,6 @@ using FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure;
 using FC.AbreuBarber.Domain.Repository;
 
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using FC.AbreuBarber.UnitTests.Application.Procedure.Common;
 

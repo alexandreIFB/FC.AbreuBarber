@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure
 {
-    public class DeleteProcedureInput : IRequest<ProcedureModelOutput>
+    public class DeleteProcedureInput : IRequest
     {
         public Guid Id { get; set; }
 
