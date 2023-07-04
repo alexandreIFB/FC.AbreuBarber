@@ -1,7 +1,5 @@
-﻿using Bogus.DataSets;
-using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
+﻿using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
 using FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure;
-using FC.AbreuBarber.Domain.Repository;
 
 using Moq;
 using Xunit;

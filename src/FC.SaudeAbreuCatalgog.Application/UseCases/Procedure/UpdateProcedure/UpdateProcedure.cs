@@ -3,8 +3,6 @@
 using FC.AbreuBarber.Application.Interfaces;
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.Domain.Repository;
-using MediatR;
-using DomainEntity = FC.AbreuBarber.Domain.Entity;
 
 namespace FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure
 {
@@ -26,7 +24,6 @@ namespace FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure
             procedureForUpdate.Update(input.Name, input.Description, input.Value);
 
             if (
-                input.IsActive != null &&
                 input.IsActive != procedureForUpdate.IsActive
             )
             {
