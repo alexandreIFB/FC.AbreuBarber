@@ -14,13 +14,7 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
             {
                 var exampleCategory = fixture.GetValidProcedure();
 
-                var input = new UpdateProcedureInput(
-                    exampleCategory.Id,
-                    fixture.GetValidProcedureName(),
-                    fixture.GetValidProcedureValue(),
-                    fixture.GetValidProcedureDescription(),
-                    fixture.GetRandomBoolean()
-                   );
+                var input = fixture.GetValidInput(exampleCategory.Id);
 
                 yield return new object[] { exampleCategory, input };
             }

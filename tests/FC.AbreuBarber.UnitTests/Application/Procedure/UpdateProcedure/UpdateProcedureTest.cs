@@ -6,7 +6,7 @@ using Moq;
 using Xunit;
 using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
 using DomainEntity = FC.AbreuBarber.Domain.Entity;
-
+using FC.AbreuBarber.Application.Exceptions;
 
 namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
 {
@@ -58,6 +58,32 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
             unitOfWorkMock.Verify(x => x.Commit(
                 It.IsAny<CancellationToken>()
                 ), Times.Once);
+        }
+
+        [Fact(DisplayName = nameof(ThrowWhenProcedureNotFound))]
+        [Trait("Application", "UpdateProcedure - Use Cases")]
+       
+        public async void ThrowWhenProcedureNotFound()
+        {
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+            var input = _fixture.GetValidInput();
+
+            repositoryMock.Setup(x => x.Get(
+                input.Id,
+                It.IsAny<CancellationToken>())
+            ).ThrowsAsync(new NotFoundException($"Procedure '{input.Id}' not found"));
+
+            var updateUseCase = new UseCase.UpdateProcedure(repositoryMock.Object, unitOfWorkMock.Object);
+
+            var task = async () => await updateUseCase.Handle(input, CancellationToken.None);
+
+            await task.Should().ThrowAsync<NotFoundException>();
+
+            repositoryMock.Verify(x => x.Get(
+                It.IsAny<Guid>(),
+                It.IsAny<CancellationToken>()
+            ), Times.Once);
         }
     }
 }
