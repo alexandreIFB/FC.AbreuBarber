@@ -54,6 +54,8 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.Common
             return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), getRandomBoolean());
         }
 
+
+
         public Mock<IProcedureRepository> GetRepositoryMock() => new();
         public Mock<IUnityOfWork> GetUnitOfWorkMock() => new();
     }

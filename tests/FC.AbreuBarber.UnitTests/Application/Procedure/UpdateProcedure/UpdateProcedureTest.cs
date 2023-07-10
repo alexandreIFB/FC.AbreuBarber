@@ -7,6 +7,9 @@ using Xunit;
 using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
 using DomainEntity = FC.AbreuBarber.Domain.Entity;
 using FC.AbreuBarber.Application.Exceptions;
+using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
+using FC.AbreuBarber.Domain.Exceptions;
+using FC.AbreuBarber.UnitTests.Application.Procedure.CreateProcedure;
 
 namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
 {
@@ -178,6 +181,37 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
             unitOfWorkMock.Verify(x => x.Commit(
                 It.IsAny<CancellationToken>()
                 ), Times.Once);
+        }
+
+        [Theory(DisplayName = nameof(ThrowWhenCantUpdate))]
+        [Trait("Application", "UpdateProcedure - Use Cases")]
+        [MemberData(
+            nameof(UpdateProcedureTestDataGenerator.GetInvalidInputs),
+            parameters: 15,
+            MemberType = typeof(UpdateProcedureTestDataGenerator)
+        )]
+        public async void ThrowWhenCantUpdate(UpdateProcedureInput invalidInput, string expectionMessage)
+        {
+            var exampleProcedure = _fixture.GetValidProcedure();
+            invalidInput.Id = exampleProcedure.Id;
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+            repositoryMock.Setup(x => x.Get(
+                exampleProcedure.Id,
+                It.IsAny<CancellationToken>())
+            ).ReturnsAsync(exampleProcedure);
+
+            var updateUseCase = new UseCase.UpdateProcedure(repositoryMock.Object, unitOfWorkMock.Object);
+
+            Func<Task> task = async () => await updateUseCase.Handle(invalidInput, CancellationToken.None);
+
+            await task.Should().ThrowAsync<EntityValidationException>().WithMessage(expectionMessage);
+
+            repositoryMock.Verify(x => x.Get(
+                exampleProcedure.Id,
+                It.IsAny<CancellationToken>()),
+                Times.Once
+            );
         }
     }
 }
