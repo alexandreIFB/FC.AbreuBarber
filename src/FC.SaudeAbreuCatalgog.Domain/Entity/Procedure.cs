@@ -79,9 +79,9 @@ namespace FC.AbreuBarber.Domain.Entity
             Validate();
         }
 
-        public void Update(string? name = null, string? description = null, double? value = null)
+        public void Update(string name, string? description = null, double? value = null)
         {
-            Name = name ?? Name;
+            Name = name;
             Description = description ?? Description;
             Value = value ?? Value;
 

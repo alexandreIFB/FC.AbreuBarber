@@ -24,6 +24,7 @@ namespace FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure
             procedureForUpdate.Update(input.Name, input.Description, input.Value);
 
             if (
+                input.IsActive != null &&
                 input.IsActive != procedureForUpdate.IsActive
             )
             {

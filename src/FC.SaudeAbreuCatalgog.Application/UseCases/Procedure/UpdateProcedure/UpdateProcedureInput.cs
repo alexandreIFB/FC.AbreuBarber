@@ -9,16 +9,16 @@ namespace FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public bool IsActive { get; set; }
+        public string? Description { get; set; }
+        public bool? IsActive { get; set; }
         public double? Value { get; set; }
 
         public UpdateProcedureInput(
             Guid id,
             string name ,
-            double value ,
-            string description,
-            bool isActive
+            double? value  = null,
+            string? description = null,
+            bool? isActive = null
         )
         {
             Id = id;

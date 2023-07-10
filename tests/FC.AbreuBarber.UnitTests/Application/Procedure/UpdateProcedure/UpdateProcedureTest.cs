@@ -62,7 +62,6 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
 
         [Fact(DisplayName = nameof(ThrowWhenProcedureNotFound))]
         [Trait("Application", "UpdateProcedure - Use Cases")]
-       
         public async void ThrowWhenProcedureNotFound()
         {
             var repositoryMock = _fixture.GetRepositoryMock();
@@ -84,6 +83,101 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
                 It.IsAny<Guid>(),
                 It.IsAny<CancellationToken>()
             ), Times.Once);
+        }
+
+        [Theory(DisplayName = nameof(UpdateProcedureWhithoutProvidingIsActive))]
+        [Trait("Application", "UpdateProcedure - Use Cases")]
+        [MemberData(
+            nameof(UpdateProcedureTestDataGenerator.GetProcedureToUpdate),
+            parameters: 10,
+            MemberType = typeof(UpdateProcedureTestDataGenerator)
+            )]
+        public async void UpdateProcedureWhithoutProvidingIsActive(
+            DomainEntity.Procedure exampleProcedure,
+            UpdateProcedureInput exampleInput)
+        {
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+
+            var input = new UpdateProcedureInput(exampleInput.Id, exampleInput.Name, exampleInput.Value,exampleInput.Description);
+
+            repositoryMock.Setup(x => x.Get(
+                exampleProcedure.Id,
+                It.IsAny<CancellationToken>())
+            ).ReturnsAsync(exampleProcedure);
+
+            var updateUseCase = new UseCase.UpdateProcedure(repositoryMock.Object, unitOfWorkMock.Object);
+
+
+            ProcedureModelOutput output = await updateUseCase.Handle(input, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.Name.Should().Be(input.Name);
+            output.Description.Should().Be(input.Description);
+            output.Value.Should().Be(input.Value);
+            output.IsActive.Should().Be((bool)exampleProcedure.IsActive!);
+
+            repositoryMock.Verify(x => x.Get(
+                It.IsAny<Guid>(),
+                It.IsAny<CancellationToken>()
+            ), Times.Once);
+
+            repositoryMock.Verify(x => x.Update(
+                exampleProcedure,
+                It.IsAny<CancellationToken>()
+            ), Times.Once);
+
+            unitOfWorkMock.Verify(x => x.Commit(
+                It.IsAny<CancellationToken>()
+                ), Times.Once);
+        }
+
+
+        [Theory(DisplayName = nameof(UpdateProcedureOnlyName))]
+        [Trait("Application", "UpdateProcedure - Use Cases")]
+        [MemberData(
+            nameof(UpdateProcedureTestDataGenerator.GetProcedureToUpdate),
+            parameters: 10,
+            MemberType = typeof(UpdateProcedureTestDataGenerator)
+            )]
+        public async void UpdateProcedureOnlyName(
+            DomainEntity.Procedure exampleProcedure,
+            UpdateProcedureInput exampleInput)
+        {
+            var repositoryMock = _fixture.GetRepositoryMock();
+            var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
+
+            var input = new UpdateProcedureInput(exampleInput.Id, exampleInput.Name);
+
+            repositoryMock.Setup(x => x.Get(
+                exampleProcedure.Id,
+                It.IsAny<CancellationToken>())
+            ).ReturnsAsync(exampleProcedure);
+
+            var updateUseCase = new UseCase.UpdateProcedure(repositoryMock.Object, unitOfWorkMock.Object);
+
+
+            ProcedureModelOutput output = await updateUseCase.Handle(input, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.Name.Should().Be(input.Name);
+            output.Description.Should().Be(exampleProcedure.Description);
+            output.Value.Should().Be(exampleProcedure.Value);
+            output.IsActive.Should().Be((bool)exampleProcedure.IsActive!);
+
+            repositoryMock.Verify(x => x.Get(
+                It.IsAny<Guid>(),
+                It.IsAny<CancellationToken>()
+            ), Times.Once);
+
+            repositoryMock.Verify(x => x.Update(
+                exampleProcedure,
+                It.IsAny<CancellationToken>()
+            ), Times.Once);
+
+            unitOfWorkMock.Verify(x => x.Commit(
+                It.IsAny<CancellationToken>()
+                ), Times.Once);
         }
     }
 }
