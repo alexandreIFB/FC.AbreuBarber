@@ -69,7 +69,7 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var unitOfWorkMock = _fixture.GetUnitOfWorkMock();
-            var input = _fixture.GetValidInput();
+            var input = _fixture.GetValidProcedureInput();
 
             repositoryMock.Setup(x => x.Get(
                 input.Id,
@@ -213,5 +213,7 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.UpdateProcedure
                 Times.Once
             );
         }
+
+        
     }
 }
