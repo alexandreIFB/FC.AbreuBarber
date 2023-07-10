@@ -260,9 +260,7 @@ namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
             var oldName = validProcedure.Name;
             var newDescription = _fixture.GetValidProcedureDescription();
 
-
-            validProcedure.Update(null, newDescription);
-
+            validProcedure.Update(validProcedure.Name, newDescription);
 
             Assert.Equal(newDescription, validProcedure.Description);
             Assert.Equal(validProcedure.Name, oldName);
@@ -277,7 +275,7 @@ namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
             var oldDescription = validProcedure.Description;
             var newValue = _fixture.GetValidProcedureValue();
 
-            validProcedure.Update(null, null, newValue);
+            validProcedure.Update(oldName, null, newValue);
 
 
 
@@ -309,7 +307,7 @@ namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
             var initDescription = procedure.Description;
 
 
-            procedure.Update(null, null);
+            procedure.Update("Valid Name", null);
 
             Assert.Equal(initDescription, procedure.Description);
         }
@@ -324,7 +322,7 @@ namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
             var procedure = _fixture.GetValidProcedure();
 
             Action action =
-                () => procedure.Update(null, null, value);
+                () => procedure.Update("Valid Name", null, value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Value should not be less than 30", exception.Message);
@@ -339,7 +337,7 @@ namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
             var procedure = _fixture.GetValidProcedure();
 
             Action action =
-                () => procedure.Update(null, null, value);
+                () => procedure.Update("Valid Name", null, value);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Value should not be bigger than 1000", exception.Message);
@@ -385,7 +383,7 @@ namespace FC.AbreuBarber.UnitTests.Domain.Entity.Procedure
             var procedure = _fixture.GetValidProcedure();
 
             Action action =
-                () => procedure.Update(null, invalidDescription);
+                () => procedure.Update("Valid Name", invalidDescription);
 
             var exception = Assert.Throws<EntityValidationException>(() => action());
             Assert.Equal("Description should be less or equal 10_000 characters long", exception.Message);
