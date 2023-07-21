@@ -35,9 +35,6 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures
                     Items: (IReadOnlyList<DomainEntity.Procedure>)proceduresList
              );
 
-
-
-
             repositoryMock.Setup(x => x.Search(
                     It.Is<SearchInput>(
                         searchInput.Page == input.Page
