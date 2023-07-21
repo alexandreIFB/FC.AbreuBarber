@@ -1,11 +1,18 @@
 ﻿
 
+using FC.AbreuBarber.Application.UseCases.Procedure.Common;
+using FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
+using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
+using FluentAssertions;
 using Moq;
 using Xunit;
 using DomainEntity = FC.AbreuBarber.Domain.Entity;
+using UseCase = FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
+
 
 namespace FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures
 {
+    [Collection(nameof(ListProceduresTestFixture))]
     public class ListProceduresTest
     {
 
@@ -27,40 +34,42 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures
                 dir: SearchOrder.Asc
             );
 
-            var outputRepositorySearch = new OutputSearch<DomainEntity.Procedure>(
+            var outputRepositorySearch = new SearchOutput<DomainEntity.Procedure>(
                     currentPage: input.Page,
                     perPage: input.PerPage,
-                    lastPage: 7,
                     total: 72,
-                    Items: (IReadOnlyList<DomainEntity.Procedure>)proceduresList
+                    items: proceduresList
              );
 
             repositoryMock.Setup(x => x.Search(
-                    It.Is<SearchInput>(
+                    It.Is<SearchInput>(searchInput =>
                         searchInput.Page == input.Page
                         && searchInput.PerPage == input.PerPage
                         && searchInput.Search == input.Search
-                        && serachInput.OrderBy == input.Sort
+                        && searchInput.OrderBy == input.Sort
                         && searchInput.Order == input.Dir
                     ),
-                    It.IsAny<CancellationToken>
+                    It.IsAny<CancellationToken>()
              )).ReturnsAsync(outputRepositorySearch);
 
-            var useCase = new ListCategories(repositoryMock.Object);
+            var useCase = new UseCase.ListProcedures(repositoryMock.Object);
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
+
+            var outputLastPage = outputRepositorySearch.Total / (double)(output.PerPage);
+
             output.Should().NotBeNull();
-            output.Page.Should().Be(outputRepositorySearch.currentPage);
+            output.Page.Should().Be(outputRepositorySearch.CurrentPage);
             output.PerPage.Should().Be(outputRepositorySearch.PerPage);
-            output.LastPage.Should().Be(outputRepositorySearch.LastPage);
+            output.LastPage.Should().Be((int)Math.Ceiling(outputLastPage));
             output.Total.Should().Be(outputRepositorySearch.Total);
             output.Items.Should().HaveCount(outputRepositorySearch.Items.Count);
-            output.Items.Foreach(outputItem =>
+            ((List<ProcedureModelOutput>)output.Items).ForEach(outputItem =>
             {
-                var repositoryProcedure = outputRepositorySearch.Items.Find(x => x.Id == outputItem.Id);
+                var repositoryProcedure = outputRepositorySearch.Items.FirstOrDefault(x => x.Id == outputItem.Id);
                 outputItem.Should().NotBeNull();
-                outputItem.Name.Should().Be(repositoryProcedure.Name);
+                outputItem.Name.Should().Be(repositoryProcedure!.Name);
                 outputItem.Description.Should().Be(repositoryProcedure.Description);
                 outputItem.Value.Should().Be(repositoryProcedure.Value);
                 outputItem.IsActive.Should().Be(repositoryProcedure.IsActive);
@@ -69,14 +78,14 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures
             });
 
             repositoryMock.Verify(x => x.Search(
-                    It.Is<SearchInput>(
+                    It.Is<SearchInput>(searchInput =>
                         searchInput.Page == input.Page
                         && searchInput.PerPage == input.PerPage
                         && searchInput.Search == input.Search
-                        && serachInput.OrderBy == input.Sort
+                        && searchInput.OrderBy == input.Sort
                         && searchInput.Order == input.Dir
                     ),
-                    It.IsAny<CancellationToken>
+                    It.IsAny<CancellationToken>()
              ), Times.Once);
         }
 
