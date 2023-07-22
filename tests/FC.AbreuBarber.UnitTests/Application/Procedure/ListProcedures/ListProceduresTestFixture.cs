@@ -1,4 +1,6 @@
-﻿using FC.AbreuBarber.UnitTests.Application.Procedure.Common;
+﻿using FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
+using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
+using FC.AbreuBarber.UnitTests.Application.Procedure.Common;
 using FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures;
 using Xunit;
 using DomainEntity = FC.AbreuBarber.Domain.Entity;
@@ -20,6 +22,20 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures
             }
 
             return list;
+        }
+
+        public ListProceduresInput GetExampleInput()
+        {
+
+            var random = new Random();
+
+            return new ListProceduresInput(
+                page: random.Next(1,20),
+                perPage: random.Next(15,40),
+                search: Faker.Commerce.ProductName(),
+                sort: "name",
+                dir: random.Next(0,10) > 5 ? SearchOrder.Asc : SearchOrder.Desc
+            );
         }
     }
 }

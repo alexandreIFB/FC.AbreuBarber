@@ -25,19 +25,12 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures
         {
             var repositoryMock = _fixture.GetRepositoryMock();
             var proceduresList = _fixture.GetExampleProceduresList();
-        
-            var input = new ListProceduresInput(
-                page: 2,
-                perPage: 15,
-                search: "search-example",
-                sort: "name",
-                dir: SearchOrder.Asc
-            );
+            var input = _fixture.GetExampleInput();
 
             var outputRepositorySearch = new SearchOutput<DomainEntity.Procedure>(
                     currentPage: input.Page,
                     perPage: input.PerPage,
-                    total: 72,
+                    total: (new Random()).Next(50,200),
                     items: proceduresList
              );
 
