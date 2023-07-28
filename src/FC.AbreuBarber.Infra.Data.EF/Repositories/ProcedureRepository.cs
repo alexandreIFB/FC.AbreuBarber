@@ -44,7 +44,7 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
 
         public Task Update(Procedure aggregate, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_procedures.Update(aggregate));
         }
     }
 }
