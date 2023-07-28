@@ -3,6 +3,7 @@ using FC.AbreuBarber.Infra.Data.EF.Configurations;
 using Repository = FC.AbreuBarber.Infra.Data.EF.Repositories;
 using Xunit;
 using FluentAssertions;
+using FC.AbreuBarber.Application.Exceptions;
 
 namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRepository
 {
@@ -61,6 +62,22 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             dbProcedure.Value.Should().Be(exampleProcedure.Value);
             dbProcedure.IsActive.Should().Be(exampleProcedure.IsActive);
             dbProcedure.CreatedAt.Should().Be(exampleProcedure.CreatedAt);
+        }
+
+        [Fact(DisplayName = nameof(GetThrowIfNotFound))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        public async Task GetThrowIfNotFound()
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var exampleIdNotInList = Guid.NewGuid();
+            await dbContext.AddRangeAsync(_fixture.GetExampleProceduresList(15));
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+            var task = async() =>  await procedureRepository.Get(exampleIdNotInList, CancellationToken.None);
+
+            await task.Should().ThrowAsync<NotFoundException>()
+                .WithMessage($"Procedure '{exampleIdNotInList}' not found");
         }
     }
 }

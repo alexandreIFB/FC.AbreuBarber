@@ -1,5 +1,6 @@
 ﻿
 
+using FC.AbreuBarber.Application.Exceptions;
 using FC.AbreuBarber.Domain.Entity;
 using FC.AbreuBarber.Domain.Repository;
 using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
@@ -24,8 +25,14 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Procedure> Get(Guid id, CancellationToken cancellationToken) =>
-            await _procedures.FindAsync(id, cancellationToken);
+        public async Task<Procedure> Get(Guid id, CancellationToken cancellationToken)
+        {
+            var procedure = await _procedures.FindAsync(id, cancellationToken);
+
+            NotFoundException.ThrowIfNull(procedure, $"Procedure '{id}' not found");
+
+            return procedure!;
+        }
 
         public async Task Insert(Procedure aggregate, CancellationToken cancellationToken) =>
             await _procedures.AddAsync(aggregate, cancellationToken);
