@@ -20,14 +20,14 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public Task Delete(Procedure aggregate, CancellationToken cancellationToken)
+        public Task Delete(Procedure aggregate, CancellationToken _)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(_procedures.Remove(aggregate));
         }
 
         public async Task<Procedure> Get(Guid id, CancellationToken cancellationToken)
         {
-            var procedure = await _procedures.FindAsync(id, cancellationToken);
+            var procedure = await _procedures.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             NotFoundException.ThrowIfNull(procedure, $"Procedure '{id}' not found");
 
@@ -42,7 +42,7 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
             throw new NotImplementedException();
         }
 
-        public Task Update(Procedure aggregate, CancellationToken cancellationToken)
+        public Task Update(Procedure aggregate, CancellationToken _)
         {
             return Task.FromResult(_procedures.Update(aggregate));
         }

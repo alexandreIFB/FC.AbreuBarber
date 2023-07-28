@@ -31,7 +31,7 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             await procedureRepository.Insert(exampleProcedure, CancellationToken.None);
             await dbContext.SaveChangesAsync(CancellationToken.None);
 
-            var dbProcedure = await dbContext.Procedures.FindAsync(exampleProcedure.Id);
+            var dbProcedure = await _fixture.CreateDbContext().Procedures.FindAsync(exampleProcedure.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Name.Should().Be(exampleProcedure.Name);
@@ -99,7 +99,7 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
 
             await dbContext.SaveChangesAsync(CancellationToken.None);
 
-            var dbProcedure = await dbContext.Procedures.FindAsync(exampleProcedure.Id);
+            var dbProcedure = await _fixture.CreateDbContext().Procedures.FindAsync(exampleProcedure.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Id.Should().Be(exampleProcedure.Id);
@@ -108,6 +108,28 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             dbProcedure.Value.Should().Be(exampleProcedure.Value);
             dbProcedure.IsActive.Should().Be(exampleProcedure.IsActive);
             dbProcedure.CreatedAt.Should().Be(exampleProcedure.CreatedAt);
+        }
+
+        [Fact(DisplayName = nameof(Delete))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        public async Task Delete()
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var exampleProcedure = _fixture.GetExampleProcedure();
+            var exampleProceduresList = _fixture.GetExampleProceduresList(15);
+            exampleProceduresList.Add(exampleProcedure);
+            await dbContext.AddRangeAsync(exampleProceduresList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+
+            await procedureRepository.Delete(exampleProcedure, CancellationToken.None);
+
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+
+            var dbProcedure = await _fixture.CreateDbContext().Procedures.FindAsync(exampleProcedure.Id);
+
+            dbProcedure.Should().BeNull();
         }
     }
 }
