@@ -28,12 +28,35 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             var procedureRepository = new Repository.ProcedureRepository(dbContext);
 
             await procedureRepository.Insert(exampleProcedure, CancellationToken.None);
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(CancellationToken.None);
 
             var dbProcedure = await dbContext.Procedures.FindAsync(exampleProcedure.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Name.Should().Be(exampleProcedure.Name);
+            dbProcedure.Description.Should().Be(exampleProcedure.Description);
+            dbProcedure.Value.Should().Be(exampleProcedure.Value);
+            dbProcedure.IsActive.Should().Be(exampleProcedure.IsActive);
+            dbProcedure.CreatedAt.Should().Be(exampleProcedure.CreatedAt);
+        }
+
+        [Fact(DisplayName = nameof(Get))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        public async Task Get()
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var exampleProcedure = _fixture.GetExampleProcedure();
+            var exampleProceduresList = _fixture.GetExampleProceduresList(15);
+            exampleProceduresList.Add(exampleProcedure);
+            await dbContext.AddRangeAsync(exampleProceduresList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+            var dbProcedure = await procedureRepository.Get(exampleProcedure.Id, CancellationToken.None);
+
+            dbProcedure.Should().NotBeNull();
+            dbProcedure.Id.Should().Be(exampleProcedure.Id);
+            dbProcedure.Name.Should().Be(exampleProcedure.Name);
             dbProcedure.Description.Should().Be(exampleProcedure.Description);
             dbProcedure.Value.Should().Be(exampleProcedure.Value);
             dbProcedure.IsActive.Should().Be(exampleProcedure.IsActive);

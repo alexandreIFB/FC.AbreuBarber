@@ -57,6 +57,13 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), getRandomBoolean());
         }
 
+        public List<Procedure> GetExampleProceduresList(int length = 15)
+        {
+            return Enumerable.Range(1, length).Select(_ => 
+                GetExampleProcedure()
+            ).ToList();
+        }
+
 
         public AbreuBarberDbContext CreateDbContext()
         {

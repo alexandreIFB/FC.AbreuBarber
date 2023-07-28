@@ -24,15 +24,11 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Procedure> Get(Guid id, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Procedure> Get(Guid id, CancellationToken cancellationToken) =>
+            await _procedures.FindAsync(id, cancellationToken);
 
-        public async Task Insert(Procedure aggregate, CancellationToken cancellationToken)
-        {
+        public async Task Insert(Procedure aggregate, CancellationToken cancellationToken) =>
             await _procedures.AddAsync(aggregate, cancellationToken);
-        }
 
         public Task<SearchOutput<Procedure>> Search(SearchInput input, CancellationToken cancellationToken)
         {
