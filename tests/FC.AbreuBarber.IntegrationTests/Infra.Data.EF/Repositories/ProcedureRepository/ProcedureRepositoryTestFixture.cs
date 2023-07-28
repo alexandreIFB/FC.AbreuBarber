@@ -65,13 +65,20 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
         }
 
 
-        public AbreuBarberDbContext CreateDbContext()
+        public AbreuBarberDbContext CreateDbContext(bool preservedData = false)
         {
-            return new AbreuBarberDbContext(
+            var context = new AbreuBarberDbContext(
                 new DbContextOptionsBuilder<AbreuBarberDbContext>()
                 .UseInMemoryDatabase("integration-tests-db")
                 .Options
                 );
+
+            if(preservedData == false)
+                context.Database.EnsureDeleted();
+
+            return context;
         }
+
+
     }
 }

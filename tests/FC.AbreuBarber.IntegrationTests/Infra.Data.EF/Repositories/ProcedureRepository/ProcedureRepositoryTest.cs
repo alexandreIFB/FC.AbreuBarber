@@ -4,6 +4,8 @@ using Repository = FC.AbreuBarber.Infra.Data.EF.Repositories;
 using Xunit;
 using FluentAssertions;
 using FC.AbreuBarber.Application.Exceptions;
+using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
+using FC.AbreuBarber.Domain.Entity;
 
 namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRepository
 {
@@ -31,7 +33,7 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             await procedureRepository.Insert(exampleProcedure, CancellationToken.None);
             await dbContext.SaveChangesAsync(CancellationToken.None);
 
-            var dbProcedure = await _fixture.CreateDbContext().Procedures.FindAsync(exampleProcedure.Id);
+            var dbProcedure = await _fixture.CreateDbContext(true).Procedures.FindAsync(exampleProcedure.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Name.Should().Be(exampleProcedure.Name);
@@ -99,7 +101,7 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
 
             await dbContext.SaveChangesAsync(CancellationToken.None);
 
-            var dbProcedure = await _fixture.CreateDbContext().Procedures.FindAsync(exampleProcedure.Id);
+            var dbProcedure = await _fixture.CreateDbContext(true).Procedures.FindAsync(exampleProcedure.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Id.Should().Be(exampleProcedure.Id);
@@ -127,9 +129,43 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
 
             await dbContext.SaveChangesAsync(CancellationToken.None);
 
-            var dbProcedure = await _fixture.CreateDbContext().Procedures.FindAsync(exampleProcedure.Id);
+            var dbProcedure = await _fixture.CreateDbContext(true).Procedures.FindAsync(exampleProcedure.Id);
 
             dbProcedure.Should().BeNull();
+        }
+
+        [Fact(DisplayName = nameof(SearchReturnListAndTotal))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        public async Task SearchReturnListAndTotal()
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var exampleProceduresList = _fixture.GetExampleProceduresList(15);
+            await dbContext.AddRangeAsync(exampleProceduresList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+            var searchInput = new SearchInput(1,20,"", "", SearchOrder.Asc);
+
+            var output = await procedureRepository.Search(searchInput, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.Items.Should().NotBeNull().And.HaveCount(exampleProceduresList.Count);
+            output.CurrentPage.Should().Be(searchInput.Page);
+            output.PerPage.Should().Be(searchInput.PerPage);
+            output.Total.Should().Be(exampleProceduresList.Count);
+            foreach(Procedure outputItem in output.Items)
+            {
+                var exampleItem = exampleProceduresList.Find(
+                    procedure => procedure.Id == outputItem.Id
+                );
+                exampleItem.Should().NotBeNull();
+                outputItem.Should().NotBeNull();
+                outputItem.Name.Should().Be(exampleItem!.Name);
+                outputItem.Description.Should().Be(exampleItem.Description);
+                outputItem.Value.Should().Be(exampleItem.Value);
+                outputItem.IsActive.Should().Be(exampleItem.IsActive);
+                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+            }
         }
     }
 }

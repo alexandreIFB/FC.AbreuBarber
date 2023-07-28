@@ -50,7 +50,6 @@ namespace FC.AbreuBarber.UnitTests.Application.Procedure.ListProcedures
 
             var output = await useCase.Handle(input, CancellationToken.None);
 
-
             var outputLastPage = outputRepositorySearch.Total / (double)(output.PerPage);
 
             output.Should().NotBeNull();

@@ -37,9 +37,11 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
         public async Task Insert(Procedure aggregate, CancellationToken cancellationToken) =>
             await _procedures.AddAsync(aggregate, cancellationToken);
 
-        public Task<SearchOutput<Procedure>> Search(SearchInput input, CancellationToken cancellationToken)
+        public async Task<SearchOutput<Procedure>> Search(SearchInput input, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var total = await _procedures.CountAsync();
+            var items = await _procedures.ToListAsync(cancellationToken);
+            return new SearchOutput<Procedure>(input.Page,input.PerPage,total,items);
         }
 
         public Task Update(Procedure aggregate, CancellationToken _)
