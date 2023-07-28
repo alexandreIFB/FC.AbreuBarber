@@ -1,5 +1,6 @@
 ﻿
 using FC.AbreuBarber.Domain.Entity;
+using FC.AbreuBarber.Infra.Data.EF.Configurations;
 using FC.AbreuBarber.IntegrationTests.Base;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -59,13 +60,11 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
 
         public AbreuBarberDbContext CreateDbContext()
         {
-            var dbContext = new AbreuBarberDbContext(
+            return new AbreuBarberDbContext(
                 new DbContextOptionsBuilder<AbreuBarberDbContext>()
                 .UseInMemoryDatabase("integration-tests-db")
                 .Options
                 );
-
-            return dbContext;
         }
     }
 }

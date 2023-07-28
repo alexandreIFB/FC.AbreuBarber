@@ -1,6 +1,8 @@
 ﻿
 using FC.AbreuBarber.Infra.Data.EF.Configurations;
+using Repository = FC.AbreuBarber.Infra.Data.EF.Repositories;
 using Xunit;
+using FluentAssertions;
 
 namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRepository
 {
@@ -23,19 +25,18 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
         {
             AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
             var exampleProcedure = _fixture.GetExampleProcedure();
-            var procedureRepository = new ProcedureRepository(dbContext);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
 
             await procedureRepository.Insert(exampleProcedure, CancellationToken.None);
             await dbContext.SaveChangesAsync();
 
-            var dbProcedure = await dbContext.Procedures.Find(exampleProcedure.Id);
-
+            var dbProcedure = await dbContext.Procedures.FindAsync(exampleProcedure.Id);
 
             dbProcedure.Should().NotBeNull();
-            dbProcedure.Name.Should().Be(exampleProcedure.Name);
+            dbProcedure!.Name.Should().Be(exampleProcedure.Name);
             dbProcedure.Description.Should().Be(exampleProcedure.Description);
             dbProcedure.Value.Should().Be(exampleProcedure.Value);
-            dbProcedure.IsAcive.Should().Be(exampleProcedure.IsActive);
+            dbProcedure.IsActive.Should().Be(exampleProcedure.IsActive);
             dbProcedure.CreatedAt.Should().Be(exampleProcedure.CreatedAt);
         }
     }
