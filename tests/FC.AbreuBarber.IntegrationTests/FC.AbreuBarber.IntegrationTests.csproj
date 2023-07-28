@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\FC.AbreuBarber.Infra.Data.EF\FC.AbreuBarber.Infra.Data.EF.csproj" />
     <ProjectReference Include="..\..\src\FC.SaudeAbreuCatalgog.Application\FC.AbreuBarber.Application.csproj" />
     <ProjectReference Include="..\..\src\FC.SaudeAbreuCatalgog.Domain\FC.AbreuBarber.Domain.csproj" />
   </ItemGroup>

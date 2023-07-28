@@ -1,4 +1,5 @@
 ﻿
+using FC.AbreuBarber.Infra.Data.EF.Configurations;
 using Xunit;
 
 namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRepository
@@ -28,6 +29,7 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             await dbContext.SaveChangesAsync();
 
             var dbProcedure = await dbContext.Procedures.Find(exampleProcedure.Id);
+
 
             dbProcedure.Should().NotBeNull();
             dbProcedure.Name.Should().Be(exampleProcedure.Name);
