@@ -167,5 +167,23 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
                 outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
             }
         }
+
+        [Fact(DisplayName = nameof(SearchReturnEmptyWhenPersistenceIsEmpty))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        public async Task SearchReturnEmptyWhenPersistenceIsEmpty()
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+            var searchInput = new SearchInput(1, 20, "", "", SearchOrder.Asc);
+
+            var output = await procedureRepository.Search(searchInput, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.Items.Should().NotBeNull().And.HaveCount(0);
+            output.CurrentPage.Should().Be(searchInput.Page);
+            output.PerPage.Should().Be(searchInput.PerPage);
+            output.Total.Should().Be(0);
+        }
     }
 }
