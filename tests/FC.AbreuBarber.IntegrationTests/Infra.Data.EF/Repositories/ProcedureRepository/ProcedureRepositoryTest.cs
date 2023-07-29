@@ -228,5 +228,79 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
                 outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
             }
         }
+
+        [Theory(DisplayName = nameof(SearchByText))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        [InlineData("Corte", 1, 5, 5, 6)]
+        [InlineData("Corte", 2, 5, 1, 6)]
+        [InlineData("Barba", 1, 5, 5, 7)]
+        [InlineData("Barba", 2, 5, 2, 7)]
+        [InlineData("Barba", 3, 5, 0, 7)]
+        public async Task SearchByText(
+            string search,
+            int page,
+            int perPage,
+            int expectedQuantityItemsReturned,
+            int expectedQuantityItemsTotal
+            )
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var exampleProceduresList = _fixture.GetExampleProceduresListWithNames(new List<string>
+        {
+            "Corte de Cabelo",
+            "Barba Tradicional",
+            "Barba Moderna",
+            "Penteado Clássico",
+            "Penteado com Pomada",
+            "Desenho de Barba",
+            "Corte Degradê",
+            "Corte Social",
+            "Corte de Máquina",
+            "Tintura de Barba",
+            "Hidratação de Barba",
+            "Massagem Capilar",
+            "Design de Sobrancelhas",
+            "Aplicação de Cera Quente",
+            "Aparar Bigode",
+            "Depilação Facial",
+            "Tratamento para Queda de Cabelo",
+            "Barboterapia (Barba + Hidratação)",
+            "Relaxamento Capilar",
+            "Touca de Gesso",
+            "Corte Infantil",
+            "Corte Feminino",
+            "Sobrancelhas Masculinas",
+            "Dreadlocks",
+            "Trança Masculina",
+            "Acabamento na Nuca",
+            "Barba Feita na Navalha"
+        });
+            await dbContext.AddRangeAsync(exampleProceduresList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+            var searchInput = new SearchInput(page, perPage, search, "", SearchOrder.Asc);
+
+            var output = await procedureRepository.Search(searchInput, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.CurrentPage.Should().Be(searchInput.Page);
+            output.PerPage.Should().Be(searchInput.PerPage);
+            output.Total.Should().Be(expectedQuantityItemsTotal);
+            output.Items.Should().NotBeNull().And.HaveCount(expectedQuantityItemsReturned);
+            foreach (Procedure outputItem in output.Items)
+            {
+                var exampleItem = exampleProceduresList.Find(
+                    procedure => procedure.Id == outputItem.Id
+                );
+                exampleItem.Should().NotBeNull();
+                outputItem.Should().NotBeNull();
+                outputItem.Name.Should().Be(exampleItem!.Name);
+                outputItem.Description.Should().Be(exampleItem.Description);
+                outputItem.Value.Should().Be(exampleItem.Value);
+                outputItem.IsActive.Should().Be(exampleItem.IsActive);
+                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+            }
+        }
     }
 }

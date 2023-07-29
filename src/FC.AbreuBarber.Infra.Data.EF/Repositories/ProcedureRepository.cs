@@ -40,8 +40,15 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
         public async Task<SearchOutput<Procedure>> Search(SearchInput input, CancellationToken cancellationToken)
         {
             var toSkip = (input.Page - 1) * input.PerPage;
-            var total = await _procedures.CountAsync();
-            var items = await _procedures.AsNoTracking().Skip(toSkip).Take(input.PerPage).ToListAsync();
+            var query = _procedures.AsNoTracking();
+
+            if (!String.IsNullOrWhiteSpace(input.Search))
+            {
+                query = query.Where(x => x.Name.Contains(input.Search));
+            }
+
+            var total = await query.CountAsync(cancellationToken);
+            var items = await query.Skip(toSkip).Take(input.PerPage).ToListAsync(cancellationToken);
             return new SearchOutput<Procedure>(input.Page,input.PerPage,total,items);
         }
          
