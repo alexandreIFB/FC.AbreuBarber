@@ -185,5 +185,48 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             output.PerPage.Should().Be(searchInput.PerPage);
             output.Total.Should().Be(0);
         }
+
+        [Theory(DisplayName = nameof(SearchReturnListAndTotal))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        [InlineData(10, 1, 5, 5)]
+        [InlineData(27, 3, 10, 7)]
+        [InlineData(17, 2, 5, 5)]
+        [InlineData(19, 4, 5, 4)]
+        public async Task SearchReturnsPaginated(
+            int quantityProceduresToGenerate,
+            int page,
+            int perPage,
+            int expectedQuantityItems
+            )
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var exampleProceduresList = _fixture.GetExampleProceduresList(quantityProceduresToGenerate);
+            await dbContext.AddRangeAsync(exampleProceduresList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+            var searchInput = new SearchInput(page, perPage, "", "", SearchOrder.Asc);
+
+            var output = await procedureRepository.Search(searchInput, CancellationToken.None);
+
+            output.Should().NotBeNull();
+            output.CurrentPage.Should().Be(searchInput.Page);
+            output.PerPage.Should().Be(searchInput.PerPage);
+            output.Total.Should().Be(quantityProceduresToGenerate);
+            output.Items.Should().NotBeNull().And.HaveCount(expectedQuantityItems);
+            foreach (Procedure outputItem in output.Items)
+            {
+                var exampleItem = exampleProceduresList.Find(
+                    procedure => procedure.Id == outputItem.Id
+                );
+                exampleItem.Should().NotBeNull();
+                outputItem.Should().NotBeNull();
+                outputItem.Name.Should().Be(exampleItem!.Name);
+                outputItem.Description.Should().Be(exampleItem.Description);
+                outputItem.Value.Should().Be(exampleItem.Value);
+                outputItem.IsActive.Should().Be(exampleItem.IsActive);
+                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+            }
+        }
     }
 }

@@ -39,11 +39,12 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
 
         public async Task<SearchOutput<Procedure>> Search(SearchInput input, CancellationToken cancellationToken)
         {
+            var toSkip = (input.Page - 1) * input.PerPage;
             var total = await _procedures.CountAsync();
-            var items = await _procedures.ToListAsync(cancellationToken);
+            var items = await _procedures.AsNoTracking().Skip(toSkip).Take(input.PerPage).ToListAsync();
             return new SearchOutput<Procedure>(input.Page,input.PerPage,total,items);
         }
-
+         
         public Task Update(Procedure aggregate, CancellationToken _)
         {
             return Task.FromResult(_procedures.Update(aggregate));
