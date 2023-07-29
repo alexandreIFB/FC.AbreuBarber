@@ -64,6 +64,15 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             ).ToList();
         }
 
+        public List<Procedure> GetExampleProceduresListWithNames(List<string> names)
+        {
+            return names.Select(name => {
+                var procedure = GetExampleProcedure();
+                procedure.Update(name);
+                return procedure;
+            }).ToList();
+        }
+
 
         public AbreuBarberDbContext CreateDbContext(bool preservedData = false)
         {
@@ -79,6 +88,36 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             return context;
         }
 
+        public List<string> GetBarberProceduresNamesStatic() => new List<string>
+        {
+            "Corte de Cabelo",
+            "Barba Tradicional",
+            "Barba Moderna",
+            "Penteado Clássico",
+            "Penteado com Pomada",
+            "Desenho de Barba",
+            "Corte Degradê",
+            "Corte Social",
+            "Corte de Máquina",
+            "Tintura de Barba",
+            "Hidratação de Barba",
+            "Massagem Capilar",
+            "Design de Sobrancelhas",
+            "Aplicação de Cera Quente",
+            "Aparar Bigode",
+            "Depilação Facial",
+            "Tratamento para Queda de Cabelo",
+            "Barboterapia (Barba + Hidratação)",
+            "Relaxamento Capilar",
+            "Touca de Gesso",
+            "Corte Infantil",
+            "Corte Feminino",
+            "Sobrancelhas Masculinas",
+            "Dreadlocks",
+            "Trança Masculina",
+            "Acabamento na Nuca",
+            "Barba Feita na Navalha"
+        };
 
     }
 }
