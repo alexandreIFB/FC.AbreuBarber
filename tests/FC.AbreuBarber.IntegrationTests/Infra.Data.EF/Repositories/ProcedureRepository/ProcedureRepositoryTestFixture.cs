@@ -64,15 +64,6 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             ).ToList();
         }
 
-        public List<Procedure> GetExampleProceduresListWithNames(List<string> names)
-        {
-            return names.Select(name => {
-                var procedure = GetExampleProcedure();
-                procedure.Update(name);
-                return procedure;
-            }).ToList();
-        }
-
 
         public AbreuBarberDbContext CreateDbContext(bool preservedData = false)
         {
@@ -87,5 +78,7 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
 
             return context;
         }
+
+
     }
 }
