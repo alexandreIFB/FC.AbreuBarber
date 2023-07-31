@@ -245,7 +245,36 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             )
         {
             AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
-            var exampleProceduresList = _fixture.GetExampleProceduresListWithNames(_fixture.GetBarberProceduresNamesStatic());
+            var exampleProceduresList = _fixture.GetExampleProceduresListWithNames(new List<string>
+        {
+            "Corte de Cabelo",
+            "Barba Tradicional",
+            "Barba Moderna",
+            "Penteado Clássico",
+            "Penteado com Pomada",
+            "Desenho de Barba",
+            "Corte Degradê",
+            "Corte Social",
+            "Corte de Máquina",
+            "Tintura de Barba",
+            "Hidratação de Barba",
+            "Massagem Capilar",
+            "Design de Sobrancelhas",
+            "Aplicação de Cera Quente",
+            "Aparar Bigode",
+            "Depilação Facial",
+            "Tratamento para Queda de Cabelo",
+            "Barboterapia (Barba + Hidratação)",
+            "Relaxamento Capilar",
+            "Touca de Gesso",
+            "Corte Infantil",
+            "Corte Feminino",
+            "Sobrancelhas Masculinas",
+            "Dreadlocks",
+            "Trança Masculina",
+            "Acabamento na Nuca",
+            "Barba Feita na Navalha"
+        });
             await dbContext.AddRangeAsync(exampleProceduresList);
             await dbContext.SaveChangesAsync(CancellationToken.None);
             var procedureRepository = new Repository.ProcedureRepository(dbContext);
@@ -272,6 +301,53 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
                 outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
             }
+        }
+
+        [Theory(DisplayName = nameof(SearchOrdered))]
+        [Trait("Integration/Infra.Data", "ProcedureRepository - Repositories")]
+        [InlineData("name", "asc")]
+        [InlineData("name", "desc")]
+        [InlineData("createdAt", "asc")]
+        [InlineData("createdAt", "desc")]
+        [InlineData("value", "asc")]
+        [InlineData("value", "desc")]
+        public async Task SearchOrdered(
+            string orderBy,
+            string order)
+        {
+            AbreuBarberDbContext dbContext = _fixture.CreateDbContext();
+            var exampleProceduresList = _fixture.GetExampleProceduresList(10);
+            await dbContext.AddRangeAsync(exampleProceduresList);
+            await dbContext.SaveChangesAsync(CancellationToken.None);
+            var procedureRepository = new Repository.ProcedureRepository(dbContext);
+
+            var searchOrder = order.ToLower() == "desc" ? SearchOrder.Desc : SearchOrder.Asc;
+            var searchInput = new SearchInput(1, 10, "", orderBy, searchOrder);
+
+            var output = await procedureRepository.Search(searchInput, CancellationToken.None);
+            var orderedList = _fixture.CloneProceduresListOrdered(exampleProceduresList, orderBy, searchOrder);
+
+
+
+            output.Should().NotBeNull();
+            output.CurrentPage.Should().Be(searchInput.Page);
+            output.PerPage.Should().Be(searchInput.PerPage);
+            output.Total.Should().Be(exampleProceduresList.Count);
+            output.Items.Should().NotBeNull().And.HaveCount(exampleProceduresList.Count);
+            for(int i = 0; i < orderedList.Count; i++)
+            {
+                var expectedItem = orderedList[i];
+                var outputItem = output.Items[i];
+                outputItem.Should().NotBeNull();
+                outputItem.Id.Should().Be(expectedItem!.Id);
+                outputItem.Name.Should().Be(expectedItem.Name);
+                outputItem.Description.Should().Be(expectedItem.Description);
+                outputItem.Value.Should().Be(expectedItem.Value);
+                outputItem.IsActive.Should().Be(expectedItem.IsActive);
+                outputItem.CreatedAt.Should().Be(expectedItem.CreatedAt);
+            }
+
+            
         }
     }
 }

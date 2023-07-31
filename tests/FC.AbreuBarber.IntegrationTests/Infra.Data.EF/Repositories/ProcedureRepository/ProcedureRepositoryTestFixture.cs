@@ -1,5 +1,6 @@
 ﻿
 using FC.AbreuBarber.Domain.Entity;
+using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
 using FC.AbreuBarber.Infra.Data.EF.Configurations;
 using FC.AbreuBarber.IntegrationTests.Base;
 using Microsoft.EntityFrameworkCore;
@@ -73,6 +74,23 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             }).ToList();
         }
 
+        public List<Procedure> CloneProceduresListOrdered(List<Procedure> proceduresList ,string orderBy, SearchOrder order)
+        {
+            var listClone = new List<Procedure>(proceduresList);
+            var orderedEnumerable = (orderBy, order) switch
+            {
+                ("name", SearchOrder.Asc) => listClone.OrderBy(x => x.Name),
+                ("name", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Name),
+                ("value", SearchOrder.Asc) => listClone.OrderBy(x => x.Value),
+                ("value", SearchOrder.Desc) => listClone.OrderByDescending(x => x.Value),
+                ("createdAt", SearchOrder.Asc) => listClone.OrderBy(x => x.CreatedAt),
+                ("createdAt", SearchOrder.Desc) => listClone.OrderByDescending(x => x.CreatedAt),
+                _ => listClone.OrderBy(x => x.Name)
+            };
+
+            return orderedEnumerable.ToList();
+        }
+
 
         public AbreuBarberDbContext CreateDbContext(bool preservedData = false)
         {
@@ -88,36 +106,7 @@ namespace FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRe
             return context;
         }
 
-        public List<string> GetBarberProceduresNamesStatic() => new List<string>
-        {
-            "Corte de Cabelo",
-            "Barba Tradicional",
-            "Barba Moderna",
-            "Penteado Clássico",
-            "Penteado com Pomada",
-            "Desenho de Barba",
-            "Corte Degradê",
-            "Corte Social",
-            "Corte de Máquina",
-            "Tintura de Barba",
-            "Hidratação de Barba",
-            "Massagem Capilar",
-            "Design de Sobrancelhas",
-            "Aplicação de Cera Quente",
-            "Aparar Bigode",
-            "Depilação Facial",
-            "Tratamento para Queda de Cabelo",
-            "Barboterapia (Barba + Hidratação)",
-            "Relaxamento Capilar",
-            "Touca de Gesso",
-            "Corte Infantil",
-            "Corte Feminino",
-            "Sobrancelhas Masculinas",
-            "Dreadlocks",
-            "Trança Masculina",
-            "Acabamento na Nuca",
-            "Barba Feita na Navalha"
-        };
+
 
     }
 }

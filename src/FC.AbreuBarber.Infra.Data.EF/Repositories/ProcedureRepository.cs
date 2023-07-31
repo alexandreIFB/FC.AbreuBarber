@@ -47,11 +47,25 @@ namespace FC.AbreuBarber.Infra.Data.EF.Repositories
                 query = query.Where(x => x.Name.Contains(input.Search));
             }
 
+            query = AddOrderToQuery(query, input.OrderBy, input.Order);
+
             var total = await query.CountAsync(cancellationToken);
             var items = await query.Skip(toSkip).Take(input.PerPage).ToListAsync(cancellationToken);
             return new SearchOutput<Procedure>(input.Page,input.PerPage,total,items);
         }
-         
+
+        private IQueryable<Procedure> AddOrderToQuery(IQueryable<Procedure> query,string orderBy,SearchOrder order)
+            => (orderBy, order) switch
+            {
+                ("name", SearchOrder.Asc) => query.OrderBy(x => x.Name),
+                ("name", SearchOrder.Desc) => query.OrderByDescending(x => x.Name),
+                ("value", SearchOrder.Asc) => query.OrderBy(x => x.Value),
+                ("value", SearchOrder.Desc) => query.OrderByDescending(x => x.Value),
+                ("createdAt", SearchOrder.Asc) => query.OrderBy(x => x.CreatedAt),
+                ("createdAt", SearchOrder.Desc) => query.OrderByDescending(x => x.CreatedAt),
+                _ => query.OrderBy(x => x.Name)
+            };
+
         public Task Update(Procedure aggregate, CancellationToken _)
         {
             return Task.FromResult(_procedures.Update(aggregate));
