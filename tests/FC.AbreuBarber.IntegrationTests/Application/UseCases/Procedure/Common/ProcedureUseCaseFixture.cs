@@ -31,7 +31,7 @@ namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.Common
             return procedureValue;
         }
 
-        public bool getRandomBoolean()
+        public bool GetRandomBoolean()
         => new Random().NextDouble() < 0.5;
 
         private string GenerateProcedureName()
@@ -48,7 +48,7 @@ namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.Common
 
         public DomainEntity.Procedure GetExampleProcedure()
         {
-            return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), getRandomBoolean());
+            return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), GetRandomBoolean());
         }
 
         public List<DomainEntity.Procedure> GetExampleProceduresList(int length = 15)

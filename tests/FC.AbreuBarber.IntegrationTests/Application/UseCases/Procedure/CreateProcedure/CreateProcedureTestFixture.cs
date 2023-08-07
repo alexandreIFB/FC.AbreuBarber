@@ -15,7 +15,7 @@ namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.CreateP
         {
             return new CreateProcedureInput(GetValidProcedureName(),
                 GetValidProcedureValue(), GetValidProcedureDescription(),
-                getRandomBoolean()
+                GetRandomBoolean()
                );
         }
 
