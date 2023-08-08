@@ -1,4 +1,5 @@
 ﻿
+using FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.IntegrationTests.Infra.Data.EF.Repositories.ProcedureRepository;
 using Xunit;
 
@@ -8,7 +9,7 @@ namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.DeleteP
     [CollectionDefinition(nameof(DeleteProcedureTestFixture))]
     public class DeleteProcedureTestFixtureCollection : ICollectionFixture<DeleteProcedureTestFixture> { }
 
-    public class DeleteProcedureTestFixture : ProcedureRepositoryTestFixture
+    public class DeleteProcedureTestFixture : ProcedureUseCaseFixture
     {
     }
 }

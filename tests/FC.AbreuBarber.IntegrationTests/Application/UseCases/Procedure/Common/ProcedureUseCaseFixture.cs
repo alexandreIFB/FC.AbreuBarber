@@ -1,6 +1,8 @@
 ﻿
 using DomainEntity = FC.AbreuBarber.Domain.Entity;
 using FC.AbreuBarber.IntegrationTests.Base;
+using FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
+using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
 
 namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.Common
 {
@@ -56,6 +58,20 @@ namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.Common
             return Enumerable.Range(1, length).Select(_ =>
                 GetExampleProcedure()
             ).ToList();
+        }
+
+        public ListProceduresInput GetListProceduresInput()
+        {
+
+            var random = new Random();
+
+            return new ListProceduresInput(
+                page: random.Next(1, 20),
+                perPage: random.Next(15, 40),
+                search: Faker.Commerce.ProductName(),
+                sort: "name",
+                dir: random.Next(0, 10) > 5 ? SearchOrder.Asc : SearchOrder.Desc
+            );
         }
     }
 }
