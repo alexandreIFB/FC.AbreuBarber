@@ -1,3 +1,5 @@
+using Fc.AbreuBarber.Api.Configurations;
+
 namespace Fc.AbreuBarber.Api
 {
     public class Program
@@ -8,27 +10,15 @@ namespace Fc.AbreuBarber.Api
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddUseCases();
+            builder.Services.AddAndConfigureControllers();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
+            app.UseDocumentation();
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }
