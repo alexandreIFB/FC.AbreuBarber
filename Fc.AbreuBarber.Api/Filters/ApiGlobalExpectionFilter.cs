@@ -1,4 +1,5 @@
-﻿using FC.AbreuBarber.Domain.Exceptions;
+﻿using FC.AbreuBarber.Application.Exceptions;
+using FC.AbreuBarber.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -31,6 +32,14 @@ namespace Fc.AbreuBarber.Api.Filters
                 details.Title = "One or more validation errors ocurred";
                 details.Status = StatusCodes.Status422UnprocessableEntity;
                 details.Type = "UnprocessableEntity";
+                details.Detail = ex!.Message;
+            } else if (expection is NotFoundException)
+            {
+                var ex = expection as NotFoundException;
+
+                details.Title = "Not Found";
+                details.Status = StatusCodes.Status404NotFound;
+                details.Type = "NotFound";
                 details.Detail = ex!.Message;
             } else
             {

@@ -44,5 +44,30 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
             output.Value.Should().Be(expectedGetProcedure.Value);
             output.CreatedAt.Should().BeSameDateAs(expectedGetProcedure.CreatedAt);
         }
+
+        [Fact(DisplayName = nameof(ThrowWhenNotFound))]
+        [Trait("End2End/API", "Procedure/Get - Endpoints")]
+        public async Task ThrowWhenNotFound()
+        {
+
+            var exampleProceduresList = _fixture.GetExampleProceduresList(15);
+
+            await _fixture.Persistence.InsertList(exampleProceduresList);
+
+            var randomGuid = Guid.NewGuid();
+
+            var (response, output) = await _fixture.
+                ApiClient.Get<ProblemDetails>(
+                $"/procedures/{randomGuid}"
+            );
+
+            response.Should().NotBeNull();
+            response!.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            output.Should().NotBeNull();
+            output!.Title.Should().Be("Not Found");
+            output.Status.Should().Be(StatusCodes.Status404NotFound);
+            output.Type.Should().Be("NotFound");
+            output.Detail.Should().Be($"Procedure '{randomGuid}' not found");
+        }
     }
 }
