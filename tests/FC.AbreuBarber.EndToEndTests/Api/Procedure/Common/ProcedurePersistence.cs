@@ -18,5 +18,13 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.Common
             => await _dbContext
             .Procedures.AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
+
+
+        public async Task InsertList(List<DomainEntity.Procedure> procedures)
+        {
+            await _dbContext
+            .Procedures.AddRangeAsync(procedures);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

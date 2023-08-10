@@ -19,6 +19,17 @@ namespace FC.AbreuBarber.EndToEndTests.Base
             };
         }
 
+        public async Task<(HttpResponseMessage?, TOutput?)> Get<TOutput>(
+            string route
+        ) where TOutput : class
+        {
+            var response = await _httpClient.GetAsync(
+                route
+            );
+            var output = await GetOutput<TOutput>(response);
+            return (response, output);
+        }
+
         public async Task<(HttpResponseMessage?, TOutput?)> Post<TOutput>(
             string route,
             object payload

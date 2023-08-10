@@ -57,5 +57,12 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.Common
         {
             return new(GetValidProcedureName(), GetValidProcedureDescription(), GetValidProcedureValue(), GetRandomBoolean());
         }
+
+        public List<DomainEntity.Procedure> GetExampleProceduresList(int length = 15)
+        {
+            return Enumerable.Range(1, length).Select(_ =>
+                GetExampleProcedure()
+            ).ToList();
+        }
     }
 }

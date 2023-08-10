@@ -18,7 +18,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             => _fixture = fixture;
 
         [Fact(DisplayName = nameof(CreateProcedure))]
-        [Trait("End2End/API", "Procedure - Endpoints")]
+        [Trait("End2End/API", "Procedure/Create - Endpoints")]
         public async Task CreateProcedure()
         {
             var input = _fixture.GetValidInput();
@@ -51,7 +51,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
         }
 
         [Fact(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
-        [Trait("End2End/API", "Procedure - Endpoints")]
+        [Trait("End2End/API", "Procedure/Create - Endpoints")]
         public async Task ThrowWhenCantInstantiateAggregate()
         {
             var input = _fixture.GetValidInput();
@@ -72,6 +72,5 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             output.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
             output.Detail.Should().Be("Value should not be less than 30");
         }
-
     }
 }
