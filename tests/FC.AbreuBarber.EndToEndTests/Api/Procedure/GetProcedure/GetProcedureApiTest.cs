@@ -42,7 +42,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
             output.Description.Should().Be(expectedGetProcedure.Description);
             output.IsActive.Should().Be(expectedGetProcedure.IsActive);
             output.Value.Should().Be(expectedGetProcedure.Value);
-            output.CreatedAt.Should().NotBeSameDateAs(expectedGetProcedure.CreatedAt);
+            output.CreatedAt.Should().BeSameDateAs(expectedGetProcedure.CreatedAt);
         }
     }
 }

@@ -1,5 +1,6 @@
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
+using FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,15 @@ namespace Fc.AbreuBarber.Api.Controllers
             var output = await _mediator.Send(input, cancellationToken);
 
             return CreatedAtAction(nameof(Create), new {output.Id} , output);
+        }
+
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
+        {
+            var output = await _mediator.Send(new GetProcedureInput(id), cancellationToken);
+
+            return Ok(output);
         }
     }
 }

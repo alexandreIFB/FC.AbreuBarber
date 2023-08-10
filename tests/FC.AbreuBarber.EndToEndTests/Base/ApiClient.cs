@@ -39,6 +39,7 @@ namespace FC.AbreuBarber.EndToEndTests.Base
                 payload,
                 _defaultSerializeOptions
             );
+
             var response = await _httpClient.PostAsync(
                 route,
                 new StringContent(
