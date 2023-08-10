@@ -10,8 +10,10 @@ namespace Fc.AbreuBarber.Api
 
             // Add services to the container.
 
-            builder.Services.AddUseCases();
-            builder.Services.AddAndConfigureControllers();
+            builder.Services
+                .AddCustomConnections()
+                .AddUseCases()
+                .AddAndConfigureControllers();
 
             var app = builder.Build();
 

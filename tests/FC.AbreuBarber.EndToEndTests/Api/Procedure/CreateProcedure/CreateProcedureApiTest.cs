@@ -2,6 +2,7 @@
 
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FluentAssertions;
+using System.Net;
 using Xunit;
 
 namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
@@ -20,14 +21,14 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
         {
             var input = _fixture.GetValidInput();
 
-            var (response,output) = await _fixture.ApiClient.Post<ProcedureModelOutput>(
+            var (response, output) = await _fixture.
+                ApiClient.Post<ProcedureModelOutput>(
                 "/procedures",
                 input
-                );
+            );
 
             response.Should().NotBeNull();
-            response!.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
-
+            response!.StatusCode.Should().Be(HttpStatusCode.Created);
             output.Should().NotBeNull();
             output!.Id.Should().NotBeEmpty();
             output.Name.Should().Be(input.Name);
@@ -44,7 +45,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             dbProcedure.Description.Should().Be(output.Description);
             dbProcedure.IsActive.Should().Be(output.IsActive);
             dbProcedure.Value.Should().Be(output.Value);
-            dbProcedure.CreatedAt.Should().NotBeSameDateAs(output.CreatedAt);
+            dbProcedure.CreatedAt.Should().BeSameDateAs(output.CreatedAt);
         }
 
     }
