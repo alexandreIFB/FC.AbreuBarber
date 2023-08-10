@@ -19,13 +19,13 @@ namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.ListPro
         public ListProceduresTest(ListProceduresTestFixture fixture)
             => _fixture = fixture;
 
-        [Theory(DisplayName = nameof(SearchReturnsPaginated))]
+        [Theory(DisplayName = nameof(List))]
         [Trait("Integration/Application", "ListProcedures - Use Cases")]
         [InlineData(10, 1, 5, 5)]
         [InlineData(27, 3, 10, 7)]
         [InlineData(17, 2, 5, 5)]
         [InlineData(19, 4, 5, 4)]
-        public async Task SearchReturnsPaginated(
+        public async Task List(
             int quantityProceduresToGenerate,
             int page,
             int perPage,
@@ -84,7 +84,5 @@ namespace FC.AbreuBarber.IntegrationTests.Application.UseCases.Procedure.ListPro
             output.Total.Should().Be(0);
             output.Items.Should().HaveCount(0);
         }
-
-
     }
 }
