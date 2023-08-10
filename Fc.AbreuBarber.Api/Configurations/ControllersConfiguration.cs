@@ -1,4 +1,5 @@
-﻿using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
+﻿using Fc.AbreuBarber.Api.Filters;
+using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
 
 namespace Fc.AbreuBarber.Api.Configurations
 {
@@ -8,7 +9,8 @@ namespace Fc.AbreuBarber.Api.Configurations
         public static IServiceCollection AddAndConfigureControllers
             (this IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options 
+                => options.Filters.Add(typeof(ApiGlobalExpectionFilter)));
             services.AddDocumentation();
 
             return services;

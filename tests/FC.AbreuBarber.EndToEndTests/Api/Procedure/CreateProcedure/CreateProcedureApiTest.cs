@@ -2,6 +2,8 @@
 
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Xunit;
 
@@ -46,6 +48,29 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             dbProcedure.IsActive.Should().Be(output.IsActive);
             dbProcedure.Value.Should().Be(output.Value);
             dbProcedure.CreatedAt.Should().BeSameDateAs(output.CreatedAt);
+        }
+
+        [Fact(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
+        [Trait("End2End/API", "Procedure - Endpoints")]
+        public async Task ThrowWhenCantInstantiateAggregate()
+        {
+            var input = _fixture.GetValidInput();
+
+            input.Value = 25.21; 
+
+            var (response, output) = await _fixture.
+                ApiClient.Post<ProblemDetails>(
+                "/procedures",
+                input
+            );
+
+            response.Should().NotBeNull();
+            response!.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+            output.Should().NotBeNull();
+            output!.Title.Should().Be("One or more validation errors ocurred");
+            output.Type.Should().Be("UnprocessableEntity");
+            output.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
+            output.Detail.Should().Be("Value should not be less than 30");
         }
 
     }
