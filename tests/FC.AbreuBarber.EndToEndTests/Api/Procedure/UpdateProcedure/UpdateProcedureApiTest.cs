@@ -164,5 +164,34 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
             output.Type.Should().Be("NotFound");
             output.Detail.Should().Be($"Procedure '{randomGuid}' not found");
         }
+
+        [Theory(DisplayName = nameof(ErrorWhenCantInstantiateAggregate))]
+        [Trait("End2End/API", "Procedure/Update - Endpoints")]
+        [MemberData(
+            nameof(UpdateProcedureApiTestDataGenerator.GetInvalidInputs),
+            parameters: 15,
+            MemberType = typeof(UpdateProcedureApiTestDataGenerator))]
+        public async void ErrorWhenCantInstantiateAggregate(
+            UpdateProcedureApiInput input,
+            string expectedDetail
+        )
+        {
+            var exampleProceduresList = _fixture.GetExampleProceduresList(30);
+            await _fixture.Persistence.InsertList(exampleProceduresList);
+            var exampleProcedure = exampleProceduresList[10];
+
+            var (response, output) = await _fixture.ApiClient.Put<ProblemDetails>(
+                $"/procedures/{exampleProcedure.Id}",
+                input
+            );
+
+            response.Should().NotBeNull();
+            response!.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+            output.Should().NotBeNull();
+            output!.Title.Should().Be("One or more validation errors ocurred");
+            output.Type.Should().Be("UnprocessableEntity");
+            output.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
+            output.Detail.Should().Be(expectedDetail);
+        }
     }
 }

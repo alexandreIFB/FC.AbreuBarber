@@ -54,8 +54,8 @@ namespace Fc.AbreuBarber.Api.Controllers
 
         [HttpPut("{id:guid}")]
         [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
-        //[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Update(
             [FromRoute] Guid id,
             [FromBody] UpdateProcedureInput apiInput, 
