@@ -61,6 +61,28 @@ namespace FC.AbreuBarber.EndToEndTests.Base
         }
 
 
+        public async Task<(HttpResponseMessage?, TOutput?)> Put<TOutput>(
+            string route,
+            object payload
+        ) where TOutput : class
+        {
+            var payloadJson = JsonSerializer.Serialize(
+                payload,
+                _defaultSerializeOptions
+            );
+
+            var response = await _httpClient.PutAsync(
+                route,
+                new StringContent(
+                    payloadJson,
+                    Encoding.UTF8,
+                    "application/json"
+                )
+            );
+            var output = await GetOutput<TOutput>(response);
+            return (response, output);
+        }
+
         private async Task<TOutput?> GetOutput<TOutput>(HttpResponseMessage response)
         where TOutput : class
         {
