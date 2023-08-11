@@ -52,14 +52,12 @@ namespace FC.AbreuBarber.EndToEndTests.Base
             return (response, output);
         }
 
-        public async Task<HttpResponseMessage?> Delete(
+        public async Task<(HttpResponseMessage?, TOutput?)> Delete<TOutput>(
             string route
-        ) {
-            var response = await _httpClient.DeleteAsync(
-                route
-            );
-
-            return response;
+        ) where TOutput : class {
+            var response = await _httpClient.DeleteAsync(route);
+            var output = await GetOutput<TOutput>(response);
+            return (response, output);
         }
 
 
