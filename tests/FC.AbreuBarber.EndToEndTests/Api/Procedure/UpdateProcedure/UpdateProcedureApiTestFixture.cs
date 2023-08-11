@@ -1,5 +1,5 @@
 ﻿
-using FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
+using Fc.AbreuBarber.Api.ApiModels.Procedure;
 using FC.AbreuBarber.EndToEndTests.Api.Procedure.Common;
 using Xunit;
 
@@ -12,11 +12,10 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
     public class UpdateProcedureApiTestFixture : ProcedureBaseFixture
     {
 
-        public UpdateProcedureInput GetUpdateProcedureInput(Guid id)
+        public UpdateProcedureApiInput GetUpdateProcedureInput()
         {
 
-            var input = new UpdateProcedureInput(
-                id,
+            var input = new UpdateProcedureApiInput(
                 GetValidProcedureName(),
                 GetValidProcedureValue(),
                 GetValidProcedureDescription(),
