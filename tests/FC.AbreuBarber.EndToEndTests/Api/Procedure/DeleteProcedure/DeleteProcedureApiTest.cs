@@ -15,7 +15,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.DeleteProcedure
 {
 
     [Collection(nameof(DeleteProcedureApiTestFixture))]
-    public class DeleteProcedureApiTest
+    public class DeleteProcedureApiTest : IDisposable
     {
 
         private readonly DeleteProcedureApiTestFixture _fixture;
@@ -74,6 +74,11 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.DeleteProcedure
             output.Status.Should().Be(StatusCodes.Status404NotFound);
             output.Type.Should().Be("NotFound");
             output.Detail.Should().Be($"Procedure '{randomGuid}' not found");
+        }
+
+        public void Dispose()
+        {
+            _fixture.CleanPersistence();
         }
 
     }

@@ -33,6 +33,15 @@ namespace FC.AbreuBarber.EndToEndTests.Base
             return context;
         }
 
+        public AbreuBarberDbContext CleanPersistence()
+        {
+            var context = CreateDbContext();
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreated();
+
+            return context;
+        }
+
         protected Faker Faker { get; set; }
     }
 }

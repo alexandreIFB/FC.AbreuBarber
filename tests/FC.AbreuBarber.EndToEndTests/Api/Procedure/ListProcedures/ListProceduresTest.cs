@@ -9,7 +9,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
 {
 
     [Collection(nameof(ListProceduresTestFixture))]
-    public class ListProceduresTest
+    public class ListProceduresTest : IDisposable
     {
 
         private readonly ListProceduresTestFixture _fixture;
@@ -57,6 +57,11 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
                 outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
             }
 
+        }
+
+        public void Dispose()
+        {
+            _fixture.CleanPersistence();
         }
 
     }

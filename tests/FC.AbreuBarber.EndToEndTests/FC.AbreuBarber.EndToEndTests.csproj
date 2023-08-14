@@ -31,4 +31,10 @@
     <ProjectReference Include="..\..\src\FC.AbreuBarber.Infra.Data.EF\FC.AbreuBarber.Infra.Data.EF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

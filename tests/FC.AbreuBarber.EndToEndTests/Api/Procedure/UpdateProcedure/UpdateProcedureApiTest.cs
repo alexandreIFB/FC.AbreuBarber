@@ -11,7 +11,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
 {
 
     [Collection(nameof(UpdateProcedureApiTestFixture))]
-    public class UpdateProcedureApiTest
+    public class UpdateProcedureApiTest : IDisposable
     {
 
         private readonly UpdateProcedureApiTestFixture _fixture;
@@ -192,6 +192,11 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
             output.Type.Should().Be("UnprocessableEntity");
             output.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
             output.Detail.Should().Be(expectedDetail);
+        }
+
+        public void Dispose()
+        {
+            _fixture.CleanPersistence();
         }
     }
 }

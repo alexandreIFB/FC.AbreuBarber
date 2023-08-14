@@ -10,7 +10,7 @@ using Xunit;
 namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
 {
     [Collection(nameof(CreateProcedureApiTestFixture))]
-    public class CreateProcedureApiTest
+    public class CreateProcedureApiTest : IDisposable
     {
         private readonly CreateProcedureApiTestFixture _fixture;
 
@@ -50,6 +50,8 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             dbProcedure.CreatedAt.Should().BeSameDateAs(output.CreatedAt);
         }
 
+        
+
         [Fact(DisplayName = nameof(ThrowWhenCantInstantiateAggregate))]
         [Trait("End2End/API", "Procedure/Create - Endpoints")]
         public async Task ThrowWhenCantInstantiateAggregate()
@@ -71,6 +73,11 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             output.Type.Should().Be("UnprocessableEntity");
             output.Status.Should().Be(StatusCodes.Status422UnprocessableEntity);
             output.Detail.Should().Be("Value should not be less than 30");
+        }
+
+        public void Dispose()
+        {
+            _fixture.CleanPersistence();
         }
     }
 }

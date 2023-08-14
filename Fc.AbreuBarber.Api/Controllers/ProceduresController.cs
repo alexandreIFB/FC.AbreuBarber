@@ -2,6 +2,7 @@ using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
 using FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure;
 using FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure;
+using FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
 using FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,16 @@ namespace Fc.AbreuBarber.Api.Controllers
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(new GetProcedureInput(id), cancellationToken);
+
+            return Ok(output);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
+        // [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> List([FromQuery] ListProceduresInput input,CancellationToken cancellationToken)
+        {
+            var output = await _mediator.Send(input, cancellationToken);
 
             return Ok(output);
         }

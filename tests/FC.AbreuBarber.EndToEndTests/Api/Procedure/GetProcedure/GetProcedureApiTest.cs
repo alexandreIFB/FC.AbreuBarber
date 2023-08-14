@@ -9,7 +9,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
 {
 
     [Collection(nameof(GetProcedureApiTestFixture))]
-    public class GetProcedureApiTest
+    public class GetProcedureApiTest : IDisposable
     {
 
         private readonly GetProcedureApiTestFixture _fixture;
@@ -68,6 +68,11 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
             output.Status.Should().Be(StatusCodes.Status404NotFound);
             output.Type.Should().Be("NotFound");
             output.Detail.Should().Be($"Procedure '{randomGuid}' not found");
+        }
+
+        public void Dispose()
+        {
+            _fixture.CleanPersistence();
         }
     }
 }

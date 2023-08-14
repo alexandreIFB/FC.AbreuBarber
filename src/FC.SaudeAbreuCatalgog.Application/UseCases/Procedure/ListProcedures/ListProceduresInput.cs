@@ -15,7 +15,10 @@ namespace FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures
             string sort = "",
             SearchOrder dir = SearchOrder.Asc)
             : base(page, perPage, search, sort, dir)
-        {
-        }
+        { }
+
+        public ListProceduresInput()
+            : base(1, 10, "", "", SearchOrder.Asc)
+        { }
     }
 }
