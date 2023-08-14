@@ -4,6 +4,7 @@ using FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure;
 using FC.AbreuBarber.Application.UseCases.Procedure.GetProcedure;
 using FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
 using FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
+using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,8 +47,23 @@ namespace Fc.AbreuBarber.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
         // [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> List([FromQuery] ListProceduresInput input,CancellationToken cancellationToken)
+        public async Task<IActionResult> List(
+            CancellationToken cancellationToken,
+            [FromQuery] int? page = null,
+            [FromQuery] int? perPage = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? sort = null,
+            [FromQuery] SearchOrder? dir = null
+            )
         {
+
+            var input = new ListProceduresInput();
+            if (page is not null) input.Page = page.Value;
+            if (perPage is not null) input.PerPage = perPage.Value;
+            if (!String.IsNullOrWhiteSpace(search)) input.Search = search;
+            if (!String.IsNullOrWhiteSpace(sort)) input.Sort = sort;
+            if (dir is not null) input.Dir = dir.Value;
+
             var output = await _mediator.Send(input, cancellationToken);
 
             return Ok(output);
