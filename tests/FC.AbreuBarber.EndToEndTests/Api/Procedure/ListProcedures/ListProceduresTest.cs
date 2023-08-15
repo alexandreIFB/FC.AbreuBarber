@@ -2,6 +2,7 @@
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
 using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
+using FC.AbreuBarber.EndToEndTests.Extensions.DateTime;
 using FluentAssertions;
 using System.Net;
 using Xunit;
@@ -52,7 +53,9 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.Value.Should().Be(exampleItem.Value);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                    exampleItem.CreatedAt.TrimMillisseconds()
+                );
             }
         }
 
@@ -112,7 +115,9 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.Value.Should().Be(exampleItem.Value);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                    exampleItem.CreatedAt.TrimMillisseconds()
+                );
             }
         }
 
@@ -159,7 +164,9 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
                 outputItem.Description.Should().Be(exampleItem.Description);
                 outputItem.Value.Should().Be(exampleItem.Value);
                 outputItem.IsActive.Should().Be(exampleItem.IsActive);
-                outputItem.CreatedAt.Should().Be(exampleItem.CreatedAt);
+                outputItem.CreatedAt.TrimMillisseconds().Should().Be(
+                    exampleItem.CreatedAt.TrimMillisseconds()
+                );
             }
         }
 
