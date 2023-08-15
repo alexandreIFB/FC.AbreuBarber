@@ -19,7 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.AbreuBarber.Infra.Data.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FC.AbreuBarber.EndToEndTests", "tests\FC.AbreuBarber.EndToEndTests\FC.AbreuBarber.EndToEndTests.csproj", "{002980C9-3431-448C-BCB5-D91B68A0796B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fc.AbreuBarber.Api", "Fc.AbreuBarber.Api\Fc.AbreuBarber.Api.csproj", "{3F69809D-9D05-4A84-AE36-82FF6F189197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fc.AbreuBarber.Api", "Fc.AbreuBarber.Api\Fc.AbreuBarber.Api.csproj", "{3F69809D-9D05-4A84-AE36-82FF6F189197}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "env", "env", "{6CBF00D8-B164-4D35-9C15-038FD802F719}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

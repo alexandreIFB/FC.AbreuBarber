@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  fc.abreubarber.db:
+    container_name: abreubarberdb-e2e
+    hostname:  abreubarberdb-e2e
+    image: mysql
+    ports:
+     - 33060:3306
+    environment:
+        MYSQL_ROOT_PASSWORD: '@BREU123'
+  

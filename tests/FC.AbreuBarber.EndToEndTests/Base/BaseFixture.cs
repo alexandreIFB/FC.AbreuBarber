@@ -1,9 +1,9 @@
 ﻿
-
 using Bogus;
 using Fc.AbreuBarber.Api;
 using FC.AbreuBarber.Infra.Data.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace FC.AbreuBarber.EndToEndTests.Base
 {
@@ -13,6 +13,8 @@ namespace FC.AbreuBarber.EndToEndTests.Base
         public HttpClient HttpClient { get; set; }
         public CustomWebApplicationFactory<Program> WebApplicationFactory { get; set; }
 
+        private readonly string _dbConnectionString;
+
         public BaseFixture()
         {
             
@@ -20,16 +22,24 @@ namespace FC.AbreuBarber.EndToEndTests.Base
             WebApplicationFactory = new CustomWebApplicationFactory<Program>();
             HttpClient = WebApplicationFactory.CreateClient();
             ApiClient = new ApiClient(HttpClient);
+            var configuration = WebApplicationFactory.Services
+            .GetService(typeof(IConfiguration));
+            ArgumentNullException.ThrowIfNull(configuration);
+            _dbConnectionString = ((IConfiguration)configuration)
+                .GetConnectionString("AbreuBarberDb");
         }
 
         public AbreuBarberDbContext CreateDbContext()
         {
+            ArgumentNullException.ThrowIfNull(_dbConnectionString);
             var context = new AbreuBarberDbContext(
                 new DbContextOptionsBuilder<AbreuBarberDbContext>()
-                .UseInMemoryDatabase("end2end-tests-db")
-                .Options
-                );
-
+                .UseMySql(
+                        _dbConnectionString,
+                        ServerVersion.AutoDetect(_dbConnectionString)
+                    )
+                    .Options
+            );
             return context;
         }
 
