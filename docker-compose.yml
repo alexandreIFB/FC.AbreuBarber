@@ -9,4 +9,6 @@ services:
      - 3306:3306
     environment:
         MYSQL_ROOT_PASSWORD: '@BREU123'
-  
+networks:
+  default:
+    name: abreubarber_net

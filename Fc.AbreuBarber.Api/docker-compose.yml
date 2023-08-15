@@ -9,4 +9,3 @@ services:
      - 33060:3306
     environment:
         MYSQL_ROOT_PASSWORD: '@BREU123'
-  
