@@ -2,9 +2,9 @@
 
 namespace Fc.AbreuBarber.Api.ApiModels.Response
 {
-    public class ListApiResponse<TData> : ApiResponse<TData>
+    public class ListApiResponse<TData> : ApiResponse<IReadOnlyList<TData>>
     {
-        public ListApiResponse(Meta meta, TData data) : base(data)
+        public ListApiResponse(Meta meta, IReadOnlyList<TData> data) : base(data)
         {
             Meta = meta;
         }

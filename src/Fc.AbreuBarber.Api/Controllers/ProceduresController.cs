@@ -8,6 +8,7 @@ using FC.AbreuBarber.Application.UseCases.Procedure.UpdateProcedure;
 using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace Fc.AbreuBarber.Api.Controllers
 {
@@ -46,7 +47,7 @@ namespace Fc.AbreuBarber.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ListApiResponse<IReadOnlyList<ProcedureModelOutput>>), StatusCodes.Status200OK)]
         // [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> List(
             CancellationToken cancellationToken,
@@ -67,7 +68,11 @@ namespace Fc.AbreuBarber.Api.Controllers
 
             var output = await _mediator.Send(input, cancellationToken);
 
-            return Ok(output);
+            var outputMeta = new Meta(output.Page, output.PerPage, output.Total, output.LastPage);
+
+            var outputFormat = new ListApiResponse<ProcedureModelOutput>(outputMeta, output.Items);
+
+            return Ok(outputFormat);
         }
 
         [HttpDelete("{id:guid}")]
