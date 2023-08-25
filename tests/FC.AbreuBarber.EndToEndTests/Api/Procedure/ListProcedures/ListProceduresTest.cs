@@ -1,4 +1,5 @@
 ﻿
+using Fc.AbreuBarber.Api.ApiModels.Response;
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.Application.UseCases.Procedure.ListProcedures;
 using FC.AbreuBarber.Domain.SeedWork.SearchableRepository;
@@ -31,18 +32,20 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
             await _fixture.Persistence.InsertList(exampleProceduresList);
 
             var (response, output) = await _fixture.
-                ApiClient.Get<ListProceduresOutput>(
+                ApiClient.Get<ListApiResponse<IReadOnlyList<ProcedureModelOutput>>>(
                 "/procedures"
             );
 
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Page.Should().Be(defaultPage);
-            output.PerPage.Should().Be(defaultPerPage);
-            output.Total.Should().Be(exampleProceduresList.Count);
-            output.Items.Should().NotBeNull().And.HaveCount(defaultPerPage);
-            foreach (ProcedureModelOutput outputItem in output.Items)
+            output!.Data.Should().NotBeNull();
+            output!.Meta.Should().NotBeNull();
+            output.Meta.Page.Should().Be(defaultPage);
+            output.Meta.PerPage.Should().Be(defaultPerPage);
+            output.Meta.Total.Should().Be(exampleProceduresList.Count);
+            output.Data.Should().NotBeNull().And.HaveCount(defaultPerPage);
+            foreach (ProcedureModelOutput outputItem in output.Data)
             {
                 var exampleItem = exampleProceduresList.FirstOrDefault(
                     procedure => procedure.Id == outputItem.Id
@@ -69,17 +72,19 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
             int defaultPerPage = 10;
 
             var (response, output) = await _fixture.
-                ApiClient.Get<ListProceduresOutput>(
+                ApiClient.Get<ListApiResponse<IReadOnlyList<ProcedureModelOutput>>>(
                 "/procedures"
             );
 
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Page.Should().Be(defaultPage);
-            output.PerPage.Should().Be(defaultPerPage);
-            output.Total.Should().Be(0);
-            output.Items.Should().NotBeNull().And.HaveCount(0);
+            output!.Meta.Should().NotBeNull();
+            output.Data.Should().NotBeNull();
+            output.Meta.Page.Should().Be(defaultPage);
+            output.Meta.Should().Be(defaultPerPage);
+            output.Meta.Total.Should().Be(0);
+            output.Data.Should().NotBeNull().And.HaveCount(0);
         }
 
         [Fact(DisplayName = nameof(ListProcedures))]
@@ -93,18 +98,20 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
             await _fixture.Persistence.InsertList(exampleProceduresList);
 
             var (response, output) = await _fixture.
-                ApiClient.Get<ListProceduresOutput>(
+                ApiClient.Get<ListApiResponse<IReadOnlyList<ProcedureModelOutput>>>(
                 "/procedures", input
             );
 
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Page.Should().Be(input.Page);
-            output.PerPage.Should().Be(input.PerPage);
-            output.Total.Should().Be(exampleProceduresList.Count);
-            output.Items.Should().NotBeNull().And.HaveCount(input.PerPage);
-            foreach (ProcedureModelOutput outputItem in output.Items)
+            output!.Meta.Should().NotBeNull();
+            output.Data.Should().NotBeNull();
+            output.Meta.Page.Should().Be(input.Page);
+            output.Meta.Should().Be(input.PerPage);
+            output.Meta.Total.Should().Be(exampleProceduresList.Count);
+            output.Data.Should().NotBeNull().And.HaveCount(input.PerPage);
+            foreach (ProcedureModelOutput outputItem in output.Data)
             {
                 var exampleItem = exampleProceduresList.FirstOrDefault(
                     procedure => procedure.Id == outputItem.Id
@@ -142,18 +149,20 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.ListProcedures
             await _fixture.Persistence.InsertList(exampleProceduresList);
 
             var (response, output) = await _fixture.
-                ApiClient.Get<ListProceduresOutput>(
+                ApiClient.Get<ListApiResponse<IReadOnlyList<ProcedureModelOutput>>>(
                 "/procedures", input
             );
 
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Page.Should().Be(page);
-            output.PerPage.Should().Be(perPage);
-            output.Total.Should().Be(quantityProceduresToGenerate);
-            output.Items.Should().NotBeNull().And.HaveCount(expectedQuantityItems);
-            foreach (ProcedureModelOutput outputItem in output.Items)
+            output!.Data.Should().NotBeNull();
+            output.Meta.Should().NotBeNull();
+            output.Meta.Page.Should().Be(page);
+            output.Meta.PerPage.Should().Be(perPage);
+            output.Meta.Total.Should().Be(quantityProceduresToGenerate);
+            output.Data.Should().NotBeNull().And.HaveCount(expectedQuantityItems);
+            foreach (ProcedureModelOutput outputItem in output.Data)
             {
                 var exampleItem = exampleProceduresList.FirstOrDefault(
                     procedure => procedure.Id == outputItem.Id
