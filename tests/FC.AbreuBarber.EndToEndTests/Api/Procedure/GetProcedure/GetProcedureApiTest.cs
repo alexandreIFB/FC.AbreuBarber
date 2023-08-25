@@ -8,6 +8,11 @@ using Xunit;
 namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
 {
 
+    class GetCategoryResponse
+    {
+        public ProcedureModelOutput Data { get; }
+    }
+
     [Collection(nameof(GetProcedureApiTestFixture))]
     public class GetProcedureApiTest : IDisposable
     {
@@ -30,19 +35,20 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
             var expectedGetProcedure = exampleProceduresList[10];
 
             var (response, output) = await _fixture.
-                ApiClient.Get<ProcedureModelOutput>(
+                ApiClient.Get<GetCategoryResponse>(
                 $"/procedures/{expectedGetProcedure.Id}"
             );
 
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Id.Should().NotBeEmpty();
-            output.Name.Should().Be(expectedGetProcedure.Name);
-            output.Description.Should().Be(expectedGetProcedure.Description);
-            output.IsActive.Should().Be(expectedGetProcedure.IsActive);
-            output.Value.Should().Be(expectedGetProcedure.Value);
-            output.CreatedAt.Should().BeSameDateAs(expectedGetProcedure.CreatedAt);
+            output!.Data.Should().NotBeNull();
+            output.Data.Id.Should().NotBeEmpty();
+            output.Data.Name.Should().Be(expectedGetProcedure.Name);
+            output.Data.Description.Should().Be(expectedGetProcedure.Description);
+            output.Data.IsActive.Should().Be(expectedGetProcedure.IsActive);
+            output.Data.Value.Should().Be(expectedGetProcedure.Value);
+            output.Data.CreatedAt.Should().BeSameDateAs(expectedGetProcedure.CreatedAt);
         }
 
         [Fact(DisplayName = nameof(ThrowWhenNotFound))]
