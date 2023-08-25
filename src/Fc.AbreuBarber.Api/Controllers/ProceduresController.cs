@@ -1,3 +1,4 @@
+using Fc.AbreuBarber.Api.ApiModels.Response;
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FC.AbreuBarber.Application.UseCases.Procedure.CreateProcedure;
 using FC.AbreuBarber.Application.UseCases.Procedure.DeleteProcedure;
@@ -23,7 +24,7 @@ namespace Fc.AbreuBarber.Api.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType( typeof(ProcedureModelOutput), StatusCodes.Status201Created) ]
+        [ProducesResponseType( typeof(ApiResponse<ProcedureModelOutput>), StatusCodes.Status201Created) ]
         [ProducesResponseType( typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType( typeof(ProblemDetails), StatusCodes.Status400BadRequest) ]
         public async Task<IActionResult> Create([FromBody] CreateProcedureInput input , CancellationToken cancellationToken)
@@ -31,17 +32,17 @@ namespace Fc.AbreuBarber.Api.Controllers
 
             var output = await _mediator.Send(input, cancellationToken);
 
-            return CreatedAtAction(nameof(Create), new {output.Id} , output);
+            return CreatedAtAction(nameof(Create), new {output.Id} , new ApiResponse<ProcedureModelOutput>(output));
         }
 
         [HttpGet("{id:guid}")]
-        [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<ProcedureModelOutput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var output = await _mediator.Send(new GetProcedureInput(id), cancellationToken);
 
-            return Ok(output);
+            return Ok(new ApiResponse<ProcedureModelOutput>(output));
         }
 
         [HttpGet]
@@ -70,7 +71,7 @@ namespace Fc.AbreuBarber.Api.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NoContentResult), StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] Guid id, CancellationToken cancellationToken)
         {
@@ -80,7 +81,7 @@ namespace Fc.AbreuBarber.Api.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        [ProducesResponseType(typeof(ProcedureModelOutput), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<ProcedureModelOutput>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Update(
@@ -99,7 +100,7 @@ namespace Fc.AbreuBarber.Api.Controllers
 
             var output = await _mediator.Send(input, cancellationToken);
 
-            return Ok(output);
+            return Ok(new ApiResponse<ProcedureModelOutput>(output));
         }
     }
 }

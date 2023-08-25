@@ -1,4 +1,5 @@
-﻿using FC.AbreuBarber.Application.UseCases.Procedure.Common;
+﻿using Fc.AbreuBarber.Api.ApiModels.Response;
+using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,12 +8,6 @@ using Xunit;
 
 namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
 {
-
-    class GetCategoryResponse
-    {
-        public ProcedureModelOutput Data { get; }
-    }
-
     [Collection(nameof(GetProcedureApiTestFixture))]
     public class GetProcedureApiTest : IDisposable
     {
@@ -35,7 +30,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.GetProcedure
             var expectedGetProcedure = exampleProceduresList[10];
 
             var (response, output) = await _fixture.
-                ApiClient.Get<GetCategoryResponse>(
+                ApiClient.Get<ApiResponse<ProcedureModelOutput>>(
                 $"/procedures/{expectedGetProcedure.Id}"
             );
 

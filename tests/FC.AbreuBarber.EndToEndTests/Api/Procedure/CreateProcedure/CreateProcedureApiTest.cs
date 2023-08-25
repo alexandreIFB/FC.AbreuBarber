@@ -1,5 +1,6 @@
 ﻿
 
+using Fc.AbreuBarber.Api.ApiModels.Response;
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +25,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             var input = _fixture.GetValidInput();
 
             var (response, output) = await _fixture.
-                ApiClient.Post<ProcedureModelOutput>(
+                ApiClient.Post<ApiResponse<ProcedureModelOutput>>(
                 "/procedures",
                 input
             );
@@ -32,22 +33,23 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.CreateProcedure
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.Created);
             output.Should().NotBeNull();
-            output!.Id.Should().NotBeEmpty();
-            output.Name.Should().Be(input.Name);
-            output.Description.Should().Be(input.Description);
-            output.IsActive.Should().Be(input.IsActive);
-            output.Value.Should().Be(input.Value);
-            output.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
+            output!.Data.Should().NotBeNull();
+            output.Data.Id.Should().NotBeEmpty();
+            output.Data.Name.Should().Be(input.Name);
+            output.Data.Description.Should().Be(input.Description);
+            output.Data.IsActive.Should().Be(input.IsActive);
+            output.Data.Value.Should().Be(input.Value);
+            output.Data.CreatedAt.Should().NotBeSameDateAs(default(DateTime));
 
-            var dbProcedure = await _fixture.Persistence.GetById(output.Id);
+            var dbProcedure = await _fixture.Persistence.GetById(output.Data.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Id.Should().NotBeEmpty();
-            dbProcedure.Name.Should().Be(output.Name);
-            dbProcedure.Description.Should().Be(output.Description);
-            dbProcedure.IsActive.Should().Be(output.IsActive);
-            dbProcedure.Value.Should().Be(output.Value);
-            dbProcedure.CreatedAt.Should().BeSameDateAs(output.CreatedAt);
+            dbProcedure.Name.Should().Be(output.Data.Name);
+            dbProcedure.Description.Should().Be(output.Data.Description);
+            dbProcedure.IsActive.Should().Be(output.Data.IsActive);
+            dbProcedure.Value.Should().Be(output.Data.Value);
+            dbProcedure.CreatedAt.Should().BeSameDateAs(output.Data.CreatedAt);
         }
 
         

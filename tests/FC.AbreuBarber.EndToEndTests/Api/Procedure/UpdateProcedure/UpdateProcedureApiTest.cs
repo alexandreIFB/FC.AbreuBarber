@@ -1,5 +1,6 @@
 ﻿
 using Fc.AbreuBarber.Api.ApiModels.Procedure;
+using Fc.AbreuBarber.Api.ApiModels.Response;
 using FC.AbreuBarber.Application.UseCases.Procedure.Common;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +35,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
 
 
             var (response, output) = await _fixture.
-                ApiClient.Put<ProcedureModelOutput>(
+                ApiClient.Put<ApiResponse<ProcedureModelOutput>>(
                 $"/procedures/{procedureForUpdate.Id}",
                 input
             );
@@ -42,13 +43,14 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Id.Should().Be(procedureForUpdate.Id);
-            output.Name.Should().Be(input.Name);
-            output.Description.Should().Be(input.Description);
-            output.Value.Should().Be(input.Value);
-            output.IsActive.Should().Be((bool)input.IsActive!);
+            output!.Data.Should().NotBeNull();
+            output.Data.Id.Should().Be(procedureForUpdate.Id);
+            output.Data.Name.Should().Be(input.Name);
+            output.Data.Description.Should().Be(input.Description);
+            output.Data.Value.Should().Be(input.Value);
+            output.Data.IsActive.Should().Be((bool)input.IsActive!);
 
-            var dbProcedure = await _fixture.Persistence.GetById(output.Id);
+            var dbProcedure = await _fixture.Persistence.GetById(output.Data.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Name.Should().Be(input.Name);
@@ -72,7 +74,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
 
 
             var (response, output) = await _fixture.
-                ApiClient.Put<ProcedureModelOutput>(
+                ApiClient.Put<ApiResponse<ProcedureModelOutput>>(
                 $"/procedures/{procedureForUpdate.Id}",
                 input
             );
@@ -80,13 +82,13 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Id.Should().Be(procedureForUpdate.Id);
-            output.Name.Should().Be(input.Name);
-            output.Description.Should().Be(procedureForUpdate.Description);
-            output.Value.Should().Be(procedureForUpdate.Value);
-            output.IsActive.Should().Be(procedureForUpdate.IsActive);
+            output!.Data.Id.Should().Be(procedureForUpdate.Id);
+            output.Data.Name.Should().Be(input.Name);
+            output.Data.Description.Should().Be(procedureForUpdate.Description);
+            output.Data.Value.Should().Be(procedureForUpdate.Value);
+            output.Data.IsActive.Should().Be(procedureForUpdate.IsActive);
 
-            var dbProcedure = await _fixture.Persistence.GetById(output.Id);
+            var dbProcedure = await _fixture.Persistence.GetById(output.Data.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Name.Should().Be(input.Name);
@@ -113,7 +115,7 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
 
 
             var (response, output) = await _fixture.
-                ApiClient.Put<ProcedureModelOutput>(
+                ApiClient.Put<ApiResponse<ProcedureModelOutput>>(
                 $"/procedures/{procedureForUpdate.Id}",
                 input
             );
@@ -121,13 +123,14 @@ namespace FC.AbreuBarber.EndToEndTests.Api.Procedure.UpdateProcedure
             response.Should().NotBeNull();
             response!.StatusCode.Should().Be(HttpStatusCode.OK);
             output.Should().NotBeNull();
-            output!.Id.Should().Be(procedureForUpdate.Id);
-            output.Name.Should().Be(input.Name);
-            output.Value.Should().Be(input.Value);
-            output.Description.Should().Be(procedureForUpdate.Description);
-            output.IsActive.Should().Be(procedureForUpdate.IsActive);
+            output!.Data.Should().NotBeNull();
+            output.Data.Id.Should().Be(procedureForUpdate.Id);
+            output.Data.Name.Should().Be(input.Name);
+            output.Data.Value.Should().Be(input.Value);
+            output.Data.Description.Should().Be(procedureForUpdate.Description);
+            output.Data.IsActive.Should().Be(procedureForUpdate.IsActive);
 
-            var dbProcedure = await _fixture.Persistence.GetById(output.Id);
+            var dbProcedure = await _fixture.Persistence.GetById(output.Data.Id);
 
             dbProcedure.Should().NotBeNull();
             dbProcedure!.Name.Should().Be(input.Name);
